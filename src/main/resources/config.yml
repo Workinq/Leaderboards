@@ -1,0 +1,224 @@
+mysql:
+  host: localhost
+  port: 3306
+  database: plugins
+  user: everything
+  password: root
+
+update-frequency: 300 # in seconds
+messages:
+  not-a-player: '&cOnly in-game players can use this command.'
+
+guis:
+  # GUI options for the main menu gui. This gui will show all the different leaderboard
+  # types such as your own faction's leaderboard, all players, etc.
+  menu:
+    name: '&aSelect a Leaderboard'
+    rows: 3
+    items:
+      own-faction:
+        material: DIAMOND_ORE
+        data: 0
+        name: '&aYour Faction''s Leaderboard'
+        lore:
+          - '&fView a leaderboard of all statistics'
+          - '&fbetween members of your Faction'
+        slot: 10
+        action: OWN_FACTION
+      all-players:
+        material: DIAMOND
+        data: 0
+        name: '&eAll Player Leaderboards'
+        lore:
+          - '&fView a leaderboard of all'
+          - '&findividual player statistics'
+        slot: 13
+        action: ALL_PLAYERS
+      all-factions:
+        material: DIAMOND_BLOCK
+        data: 0
+        name: '&cAll Faction Leaderboards'
+        lore:
+          - '&fView a leaderboard of all combined'
+          - '&fstatistics for Factions ranked'
+          - '&fagainst each other'
+        slot: 16
+        action: ALL_FACTIONS
+  # GUI options for the Leaderboards main menu. This gui will show all the categories
+  # you can view statistics from such as Time stats, Combat stats, etc.
+  lb-menu:
+    name: '&aStats Leaderboards'
+    rows: 3
+    items:
+      time-stats:
+        material: WATCH
+        data: 0
+        name: '&e&lTime Statistics'
+        lore:
+          - '&7Click here to view the Leaderboards'
+          - '&7for Time statistics'
+        slot: 10
+        action: TIME
+      combat-stats:
+        material: DIAMOND_SWORD
+        data: 0
+        name: '&c&lCombat Statistics'
+        lore:
+          - '&7Click here to view the Leaderboards'
+          - '&7for Combat statistics'
+        slot: 12
+        action: COMBAT
+      block-stats:
+        material: BEDROCK
+        data: 0
+        name: '&a&lBlock Statistics'
+        lore:
+          - '&7Click here to view the Leaderboards'
+          - '&7for Block statistics'
+        slot: 14
+        action: BLOCK
+      event-stats:
+        material: NETHER_STAR
+        data: 0
+        name: '&b&lEvent Statistics'
+        lore:
+          - '&7Click here to view the Leaderboards'
+          - '&7for Event statistics'
+        slot: 16
+        action: EVENT
+  # GUI options for the time leaderboard
+  lb-time:
+    name: '&aTime Leaderboards'
+    rows: 3
+    items:
+      connected:
+        material: COMPASS
+        data: 0
+        name: '&aTime Connected'
+        lore: []
+        slot: 11
+        action: TIME_CONNECTED
+      played:
+        material: WATCH
+        data: 0
+        name: '&2Time Played'
+        lore: []
+        slot: 15
+        action: TIME_PLAYED
+  # GUI options for the combat leaderboard
+  lb-combat:
+    name: '&aCombat Leaderboards'
+    rows: 3
+    items:
+      mob-kills:
+        material: SKULL_ITEM
+        data: 4
+        name: '&dMob Kills'
+        lore: []
+        slot: 11
+        action: MOB_KILLS
+      player-deaths:
+        material: DIAMOND_HELMET
+        data: 0
+        name: '&3Player Deaths'
+        lore: []
+        slot: 13
+        action: PLAYER_DEATHS
+      player-kills:
+        material: DIAMOND_SWORD
+        data: 0
+        name: '&cPlayer Kills'
+        lore: []
+        slot: 15
+        action: PLAYER_KILLS
+  # GUI options for the blocks leaderboard
+  lb-block:
+    name: '&aBlock Leaderboards'
+    rows: 4
+    items:
+      blocks-broken:
+        material: DIAMOND_PICKAXE
+        data: 0
+        name: '&3Blocks Broken'
+        lore: []
+        slot: 10
+        action: BLOCKS_BROKEN
+      blocks-placed:
+        material: OBSIDIAN
+        data: 0
+        name: '&dBlocks Placed'
+        lore: []
+        slot: 12
+        action: BLOCKS_PLACED
+      blocks-travelled:
+        material: DIAMOND_BOOTS
+        data: 0
+        name: '&bBlocks Travelled'
+        lore: []
+        slot: 14
+        action: BLOCKS_TRAVELLED
+      cane-broken:
+        material: SUGAR_CANE
+        data: 0
+        name: '&aSugar Cane Broken'
+        lore: []
+        slot: 16
+        action: CANE_BROKEN
+      spawners-placed:
+        material: MOB_SPAWNER
+        data: 0
+        name: '&5Mob Spawners Placed'
+        lore: []
+        slot: 22
+        action: SPAWNERS_PLACED
+  lb-event:
+    name: '&aEvent Leaderboards'
+    rows: 3
+    items:
+      lms-wins:
+        material: DIAMOND_HELMET
+        data: 0
+        name: '&bLMS Wins'
+        lore: []
+        slot: 11
+        action: LMS_WINS
+      envoy-claims:
+        material: CHEST
+        data: 0
+        name: '&aEnvoys Claimed'
+        lore: []
+        slot: 13
+        action: ENVOY_CLAIMS
+      koth-wins:
+        material: DIAMOND_SWORD
+        data: 0
+        name: '&cKoTH Wins'
+        lore: []
+        slot: 15
+        action: KOTH_WINS
+  leaderboard:
+    name: '&aTop 9 %stat% %type%'
+    rows: 5
+
+items:
+  index-to-block:
+    1: DIAMOND_BLOCK:0
+    2: EMERALD_BLOCK:0
+    3: GOLD_BLOCK:0
+    4: IRON_BLOCK:0
+    5: DIAMOND_ORE:0
+    6: EMERALD_ORE:0
+    7: GOLD_ORE:0
+    8: IRON_IRE:0
+    9: REDSTONE_ORE:0
+  faction-entry:
+    name: '&3&l#%index% &r&b- %name%'
+    lore:
+      - ''
+      - '&f&lGroup Size: &r&a%size%'
+      - '&f&lCurrent Total: &r&a%value%'
+  player-entry:
+    name: '&3&l#%index% &r&b- %name%'
+    lore:
+      - ''
+      - '&f&lCurrent Total: &r&a%value%'
