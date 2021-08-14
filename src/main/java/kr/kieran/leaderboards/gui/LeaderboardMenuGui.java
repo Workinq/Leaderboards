@@ -26,31 +26,11 @@ public class LeaderboardMenuGui extends PopulateGui
     @Override
     protected GuiAction<InventoryClickEvent> getAction(String actionRaw)
     {
-        Action action = Action.valueOf(actionRaw);
-        switch (action)
-        {
-            case OWN_FACTION:
-                return event -> {
-                    LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, LeaderboardType.OWN_FACTION);
-                    selectGui.open(event.getWhoClicked());
-                };
-            case ALL_PLAYERS:
-                return event -> {
-                    LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, LeaderboardType.ALL_PLAYERS);
-                    selectGui.open(event.getWhoClicked());
-                };
-            case ALL_FACTIONS:
-                return event -> {
-                    LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, LeaderboardType.ALL_FACTIONS);
-                    selectGui.open(event.getWhoClicked());
-                };
-        }
-        return null;
-    }
-
-    private enum Action
-    {
-        OWN_FACTION, ALL_PLAYERS, ALL_FACTIONS
+        LeaderboardType type = LeaderboardType.valueOf(actionRaw);
+        return event -> {
+            LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, type, player);
+            selectGui.open(player);
+        };
     }
 
 }
