@@ -8,6 +8,7 @@ import kr.kieran.leaderboards.gui.leaderboard.EventGui;
 import kr.kieran.leaderboards.gui.leaderboard.TimeGui;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
 import kr.kieran.leaderboards.model.LeaderboardType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class LeaderboardSelectGui extends PopulateGui
@@ -16,9 +17,9 @@ public class LeaderboardSelectGui extends PopulateGui
     private final LeaderboardsPlugin plugin;
     private final LeaderboardType type;
 
-    public LeaderboardSelectGui(LeaderboardsPlugin plugin, LeaderboardType type)
+    public LeaderboardSelectGui(LeaderboardsPlugin plugin, LeaderboardType type, Player player)
     {
-        super(plugin, "guis.lb-menu");
+        super(plugin, "guis.lb-menu", player);
 
         // Assign
         this.plugin = plugin;
@@ -34,10 +35,10 @@ public class LeaderboardSelectGui extends PopulateGui
         Action action = Action.valueOf(actionRaw);
         switch (action)
         {
-            case TIME: return event -> new TimeGui(plugin, type).open(event.getWhoClicked());
-            case COMBAT: return event -> new CombatGui(plugin, type).open(event.getWhoClicked());
-            case BLOCK: return event -> new BlockGui(plugin, type).open(event.getWhoClicked());
-            case EVENT: return event -> new EventGui(plugin, type).open(event.getWhoClicked());
+            case TIME: return event -> new TimeGui(plugin, type, player).open(player);
+            case COMBAT: return event -> new CombatGui(plugin, type, player).open(player);
+            case BLOCK: return event -> new BlockGui(plugin, type, player).open(player);
+            case EVENT: return event -> new EventGui(plugin, type, player).open(player);
         }
         return null;
     }

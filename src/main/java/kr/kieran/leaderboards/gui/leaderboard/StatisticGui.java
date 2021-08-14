@@ -10,6 +10,7 @@ import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.List;
@@ -20,9 +21,9 @@ public abstract class StatisticGui extends PopulateGui
     protected final LeaderboardsPlugin plugin;
     protected final LeaderboardType type;
 
-    public StatisticGui(LeaderboardsPlugin plugin, LeaderboardType type, String path)
+    public StatisticGui(LeaderboardsPlugin plugin, LeaderboardType type, String path, Player player)
     {
-        super(plugin, path);
+        super(plugin, path, player);
 
         // Assign
         this.plugin = plugin;

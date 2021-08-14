@@ -8,6 +8,7 @@ import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,14 +17,16 @@ public abstract class PopulateGui extends BaseGui
 
     private final LeaderboardsPlugin plugin;
     private final String path;
+    protected final Player player;
 
-    public PopulateGui(LeaderboardsPlugin plugin, String path)
+    public PopulateGui(LeaderboardsPlugin plugin, String path, Player player)
     {
         super(plugin.getConfig().getInt(path + ".rows"), Color.color(plugin.getConfig().getString(path + ".name")), InteractionModifier.VALUES);
 
         // Assign
         this.plugin = plugin;
         this.path = path;
+        this.player = player;
     }
 
     protected void populateGui()

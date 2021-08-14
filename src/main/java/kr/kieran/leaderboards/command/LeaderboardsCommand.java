@@ -30,7 +30,7 @@ public class LeaderboardsCommand implements CommandExecutor
 
         // Open the leaderboards menu gui
         Player player = (Player) sender;
-        LeaderboardMenuGui menuGui = new LeaderboardMenuGui(plugin);
+        LeaderboardMenuGui menuGui = new LeaderboardMenuGui(plugin, player);
         menuGui.open(player);
         return true;
     }

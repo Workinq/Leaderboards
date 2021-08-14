@@ -4,6 +4,7 @@ import dev.triumphteam.gui.components.GuiAction;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
 import kr.kieran.leaderboards.model.LeaderboardType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class LeaderboardMenuGui extends PopulateGui
@@ -11,9 +12,9 @@ public class LeaderboardMenuGui extends PopulateGui
 
     private final LeaderboardsPlugin plugin;
 
-    public LeaderboardMenuGui(LeaderboardsPlugin plugin)
+    public LeaderboardMenuGui(LeaderboardsPlugin plugin, Player player)
     {
-        super(plugin, "guis.menu");
+        super(plugin, "guis.menu", player);
 
         // Assign
         this.plugin = plugin;
