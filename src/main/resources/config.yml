@@ -9,6 +9,7 @@ update-frequency: 300 # in seconds
 time-check-frequency: 10 # in seconds
 messages:
   not-a-player: '&cOnly in-game players can use this command.'
+  invalid-faction: '&cYou must belong to a faction to view the leaderboard.'
 
 guis:
   # GUI options for the main menu gui. This gui will show all the different leaderboard
