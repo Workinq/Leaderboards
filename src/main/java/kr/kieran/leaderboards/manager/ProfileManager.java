@@ -13,13 +13,7 @@ public class ProfileManager
 
     public void add(UUID uniqueId, Profile profile) { this.profiles.put(uniqueId, profile); }
     public void remove(UUID uniqueId) { this.profiles.remove(uniqueId); }
-    public Profile get(UUID uniqueId)
-    {
-        Profile profile = this.profiles.get(uniqueId);
-        if (profile != null) return profile;
-        for (Profile search : this.profiles.values()) if (search.getUniqueId().equals(uniqueId)) return search;
-        return null;
-    }
+    public Profile get(UUID uniqueId) { return this.profiles.get(uniqueId); }
 
     public void disable() { this.profiles.clear(); }
 
