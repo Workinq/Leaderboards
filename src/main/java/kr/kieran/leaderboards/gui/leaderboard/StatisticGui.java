@@ -1,6 +1,7 @@
 package kr.kieran.leaderboards.gui.leaderboard;
 
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import dev.triumphteam.gui.components.GuiAction;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class StatisticGui extends PopulateGui
 {
@@ -39,16 +41,16 @@ public abstract class StatisticGui extends PopulateGui
         LeaderboardStatistic statistic = LeaderboardStatistic.valueOf(actionRaw);
         switch (type)
         {
-            case ALL_PLAYERS: return event -> new PlayerGui(plugin, statistic.getNiceName(), type)
-            {
-                @Override
-                public List<LeaderboardEntry<OfflinePlayer>> getEntries()
+            case ALL_PLAYERS:
+                return event -> new PlayerGui(plugin, statistic.getNiceName(), type)
                 {
-                    return plugin.getPlayerManager().getEntriesBy(statistic);
-                }
-            }.open(event.getWhoClicked());
+                    @Override
+                    public List<LeaderboardEntry<OfflinePlayer>> getEntries()
+                    {
+                        return plugin.getPlayerManager().getEntriesBy(statistic);
+                    }
+                }.open(player);
             case ALL_FACTIONS:
-            case OWN_FACTION:
                 return event -> new FactionGui(plugin, statistic.getNiceName(), type)
                 {
                     @Override
@@ -56,7 +58,17 @@ public abstract class StatisticGui extends PopulateGui
                     {
                         return plugin.getFactionManager().getEntriesBy(statistic);
                     }
-                }.open(event.getWhoClicked());
+                }.open(player);
+            case OWN_FACTION:
+                Faction faction = MPlayer.get(player).getFaction();
+                return event -> new PlayerGui(plugin, statistic.getNiceName(), type)
+                {
+                    @Override
+                    public List<LeaderboardEntry<OfflinePlayer>> getEntries()
+                    {
+                        return plugin.getPlayerManager().getEntriesBy(statistic).stream().filter(entry -> MPlayer.get(entry.getRepresented()).getFaction() == faction).collect(Collectors.toList());
+                    }
+                }.open(player);
         }
         return null;
     }
