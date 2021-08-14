@@ -6,6 +6,7 @@ mysql:
   password: root
 
 update-frequency: 300 # in seconds
+time-check-frequency: 10 # in seconds
 messages:
   not-a-player: '&cOnly in-game players can use this command.'
 

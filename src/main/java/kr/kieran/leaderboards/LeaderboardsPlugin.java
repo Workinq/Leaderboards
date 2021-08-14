@@ -10,6 +10,7 @@ import kr.kieran.leaderboards.listener.ProfileStatisticListener;
 import kr.kieran.leaderboards.manager.FactionStatisticManager;
 import kr.kieran.leaderboards.manager.PlayerStatisticManager;
 import kr.kieran.leaderboards.manager.ProfileManager;
+import kr.kieran.leaderboards.task.ProfileTimePlayedTask;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.TimeUnit;
@@ -48,9 +49,8 @@ public class LeaderboardsPlugin extends JavaPlugin
         // Register
         this.registerManagers();
         this.registerListeners();
-
-        // Command
-        this.getCommand("leaderboards").setExecutor(new LeaderboardsCommand(this));
+        this.registerCommands();
+        this.registerTasks();
     }
 
     @Override
@@ -78,6 +78,16 @@ public class LeaderboardsPlugin extends JavaPlugin
     {
         this.getServer().getPluginManager().registerEvents(new PlayerConnectionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ProfileStatisticListener(this), this);
+    }
+
+    private void registerCommands()
+    {
+        this.getCommand("leaderboards").setExecutor(new LeaderboardsCommand(this));
+    }
+
+    private void registerTasks()
+    {
+        new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("time-check-frequency") * 20L);
     }
 
 }
