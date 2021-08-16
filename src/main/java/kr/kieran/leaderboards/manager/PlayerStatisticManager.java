@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
 {
@@ -42,6 +43,12 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                             ResultSet resultSet = statement.executeQuery();
                             while (resultSet.next()) entries.add(new LeaderboardEntry<>(plugin.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("unique_id"))), resultSet.getInt(statistic.getColumnName())));
                         }
+
+                        // Sort entries
+                        entries = entries
+                                .stream()
+                                .sorted((first, last) -> Integer.compare(last.getValue(), first.getValue()))
+                                .collect(Collectors.toList());
 
                         // Replace the cache
                         PlayerStatisticManager.this.entries.put(statistic, entries);
