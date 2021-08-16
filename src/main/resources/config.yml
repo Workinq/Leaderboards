@@ -5,6 +5,7 @@ mysql:
   user: everything
   password: root
 
+profile-update-frequency: 150 # in seconds
 update-frequency: 300 # in seconds
 time-check-frequency: 10 # in seconds
 messages:

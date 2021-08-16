@@ -10,6 +10,7 @@ import kr.kieran.leaderboards.listener.ProfileStatisticListener;
 import kr.kieran.leaderboards.manager.FactionStatisticManager;
 import kr.kieran.leaderboards.manager.PlayerStatisticManager;
 import kr.kieran.leaderboards.manager.ProfileManager;
+import kr.kieran.leaderboards.task.ProfileSaveTask;
 import kr.kieran.leaderboards.task.ProfileTimePlayedTask;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -69,7 +70,7 @@ public class LeaderboardsPlugin extends JavaPlugin
     private void registerManagers()
     {
         this.database = new Database(this);
-        this.profileManager = new ProfileManager();
+        this.profileManager = new ProfileManager(this);
         this.factionManager = new FactionStatisticManager(this);
         this.playerManager = new PlayerStatisticManager(this);
     }
@@ -87,6 +88,7 @@ public class LeaderboardsPlugin extends JavaPlugin
 
     private void registerTasks()
     {
+        new ProfileSaveTask(this).runTaskTimer(this, this.getConfig().getInt("profile-update-frequency") * 20L, this.getConfig().getInt("profile-update-frequency") * 20L);
         new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("time-check-frequency") * 20L);
     }
 
