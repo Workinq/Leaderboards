@@ -33,28 +33,26 @@ public class LeaderboardMenuGui extends PopulateGui
         switch (type)
         {
             case OWN_FACTION:
-            {
-                Faction faction = MPlayer.get(player).getFaction();
-                if (faction.isSystemFaction())
-                {
-                    player.sendMessage(Color.color(plugin.getConfig().getString("messages.invalid-faction")));
-                    return null;
-                }
-                return this.open(type);
-            }
+                return event -> {
+                    Faction faction = MPlayer.get(player).getFaction();
+                    if (faction.isSystemFaction())
+                    {
+                        player.sendMessage(Color.color(plugin.getConfig().getString("messages.invalid-faction")));
+                        return;
+                    }
+                    this.open(type);
+                };
             case ALL_FACTIONS:
             case ALL_PLAYERS:
-                return this.open(type);
+                return event -> this.open(type);
         }
         return null;
     }
 
-    private GuiAction<InventoryClickEvent> open(LeaderboardType type)
+    private void open(LeaderboardType type)
     {
-        return event -> {
-            LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, type, player);
-            selectGui.open(player);
-        };
+        LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, type, player);
+        selectGui.open(player);
     }
 
 }
