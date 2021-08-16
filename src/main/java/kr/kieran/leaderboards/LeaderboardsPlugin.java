@@ -13,7 +13,10 @@ import kr.kieran.leaderboards.manager.ProfileManager;
 import kr.kieran.leaderboards.task.ProfileSaveTask;
 import kr.kieran.leaderboards.task.ProfileTimePlayedTask;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class LeaderboardsPlugin extends JavaPlugin
@@ -39,6 +42,9 @@ public class LeaderboardsPlugin extends JavaPlugin
     private TaskChainFactory taskChain;
     public <T> TaskChain<T> newChain() { return taskChain.newChain(); }
 
+    // TASKS
+    private final Set<BukkitTask> tasks = new HashSet<>();
+
     @Override public void onLoad() { this.saveDefaultConfig(); }
 
     @Override
@@ -58,6 +64,7 @@ public class LeaderboardsPlugin extends JavaPlugin
     public void onDisable()
     {
         // Ensure all tasks are complete
+        this.tasks.forEach(BukkitTask::cancel);
         this.taskChain.shutdown(60, TimeUnit.SECONDS);
 
         // Manager shutdown
@@ -88,8 +95,8 @@ public class LeaderboardsPlugin extends JavaPlugin
 
     private void registerTasks()
     {
-        new ProfileSaveTask(this).runTaskTimer(this, this.getConfig().getInt("profile-update-frequency") * 20L, this.getConfig().getInt("profile-update-frequency") * 20L);
-        new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("time-check-frequency") * 20L);
+        this.tasks.add(new ProfileSaveTask(this).runTaskTimer(this, this.getConfig().getInt("profile-update-frequency") * 20L, this.getConfig().getInt("profile-update-frequency") * 20L));
+        this.tasks.add(new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("time-check-frequency") * 20L));
     }
 
 }
