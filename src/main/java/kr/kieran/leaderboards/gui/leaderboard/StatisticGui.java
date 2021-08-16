@@ -66,7 +66,11 @@ public abstract class StatisticGui extends PopulateGui
                     @Override
                     public List<LeaderboardEntry<OfflinePlayer>> getEntries()
                     {
-                        return plugin.getPlayerManager().getEntriesBy(statistic).stream().filter(entry -> MPlayer.get(entry.getRepresented()).getFaction() == faction).collect(Collectors.toList());
+                        return plugin.getPlayerManager()
+                                .getEntriesBy(statistic)
+                                .stream()
+                                .filter(entry -> MPlayer.get(entry.getRepresented().getUniqueId().toString()).getFaction() == faction)
+                                .collect(Collectors.toList());
                     }
                 }.open(player);
         }
