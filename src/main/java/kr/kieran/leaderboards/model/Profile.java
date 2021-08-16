@@ -11,7 +11,7 @@ public class Profile
     // Store the player's last checked block (for afk checking)
     private PlayerLocation location;
     public PlayerLocation getLastLocation() { return location; }
-    public void setLocation(PlayerLocation location) { this.location = location; }
+    public void setLastLocation(PlayerLocation location) { this.location = location; }
 
     private long timePlayed;
     public long getTimePlayed() { return timePlayed; }

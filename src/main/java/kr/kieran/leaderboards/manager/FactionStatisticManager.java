@@ -56,7 +56,7 @@ public class FactionStatisticManager extends StatisticManager<Faction>
                             entries.add(new LeaderboardEntry<>(faction, total));
                         }
 
-                        // Sort and truncate list to 9
+                        // Sort entries
                         entries = entries
                                 .stream()
                                 .sorted((first, last) -> Integer.compare(last.getValue(), first.getValue()))
