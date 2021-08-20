@@ -4,7 +4,7 @@ public enum LeaderboardType
 {
 
     OWN_FACTION(""),
-    ALL_PLAYERS("Players"),
+    ALL_PLAYERS(""),
     ALL_FACTIONS("Factions"),
 
     ;
