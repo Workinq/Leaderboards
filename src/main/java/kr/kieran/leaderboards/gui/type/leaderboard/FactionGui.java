@@ -33,7 +33,7 @@ public abstract class FactionGui extends LeaderboardGui<Faction>
                 .setName(Color.color(plugin.getConfig().getString("items.faction-entry.name").replace("%index%", String.valueOf(index)).replace("%name%", faction.getName())))
                 .setLore(Color.color(plugin.getConfig().getStringList("items.faction-entry.lore")
                         .stream()
-                        .map(text -> text.replace("%size%", String.valueOf(faction.getMPlayers().size())).replace("%value%", String.valueOf(entry.getValue())))
+                        .map(text -> text.replace("%size%", String.valueOf(faction.getMPlayers().size())).replace("%value%", statistic.getFormattedValue().apply(entry.getValue())))
                         .collect(Collectors.toList())))
                 .asGuiItem();
     }

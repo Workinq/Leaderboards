@@ -30,7 +30,7 @@ public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
         OfflinePlayer player = entry.getRepresented();
         return getBuilderFrom(player)
                 .setName(Color.color(plugin.getConfig().getString("items.player-entry.name").replace("%index%", String.valueOf(index)).replace("%name%", player.getName())))
-                .setLore(Color.color(plugin.getConfig().getStringList("items.player-entry.lore").stream().map(text -> text.replace("%value%", String.valueOf(entry.getValue()))).collect(Collectors.toList())))
+                .setLore(Color.color(plugin.getConfig().getStringList("items.player-entry.lore").stream().map(text -> text.replace("%value%", statistic.getFormattedValue().apply(entry.getValue()))).collect(Collectors.toList())))
                 .asGuiItem();
     }
 
