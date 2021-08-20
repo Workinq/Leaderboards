@@ -52,7 +52,7 @@ public class LeaderboardMenuGui extends PopulateGui
     private void open(LeaderboardType type)
     {
         LeaderboardSelectGui selectGui = new LeaderboardSelectGui(plugin, type, player);
-        selectGui.open(player);
+        selectGui.open(player, this);
     }
 
 }

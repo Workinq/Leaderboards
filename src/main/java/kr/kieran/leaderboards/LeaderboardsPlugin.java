@@ -9,6 +9,7 @@ import kr.kieran.leaderboards.listener.PlayerConnectionListener;
 import kr.kieran.leaderboards.listener.ProfileStatisticListener;
 import kr.kieran.leaderboards.manager.FactionStatisticManager;
 import kr.kieran.leaderboards.manager.PlayerStatisticManager;
+import kr.kieran.leaderboards.manager.PreviousGuiManager;
 import kr.kieran.leaderboards.manager.ProfileManager;
 import kr.kieran.leaderboards.task.ProfileSaveTask;
 import kr.kieran.leaderboards.task.ProfileTimePlayedTask;
@@ -37,6 +38,10 @@ public class LeaderboardsPlugin extends JavaPlugin
     // MANAGER: PLAYER STATISTIC
     private PlayerStatisticManager playerManager;
     public PlayerStatisticManager getPlayerManager() { return playerManager; }
+
+    // MANAGER: PREVIOUS GUI
+    private PreviousGuiManager guiManager;
+    public PreviousGuiManager getGuiManager() { return guiManager; }
 
     // TASK CHAIN
     private TaskChainFactory taskChain;
@@ -68,6 +73,7 @@ public class LeaderboardsPlugin extends JavaPlugin
         this.taskChain.shutdown(60, TimeUnit.SECONDS);
 
         // Manager shutdown
+        this.guiManager.disable();
         this.playerManager.disable();
         this.factionManager.disable();
         this.profileManager.disable();
@@ -80,6 +86,7 @@ public class LeaderboardsPlugin extends JavaPlugin
         this.profileManager = new ProfileManager(this);
         this.factionManager = new FactionStatisticManager(this);
         this.playerManager = new PlayerStatisticManager(this);
+        this.guiManager = new PreviousGuiManager();
     }
 
     private void registerListeners()

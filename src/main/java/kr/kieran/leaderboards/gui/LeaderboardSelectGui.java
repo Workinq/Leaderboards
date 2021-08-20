@@ -35,10 +35,10 @@ public class LeaderboardSelectGui extends PopulateGui
         Action action = Action.valueOf(actionRaw);
         switch (action)
         {
-            case TIME: return event -> new TimeGui(plugin, type, player).open(player);
-            case COMBAT: return event -> new CombatGui(plugin, type, player).open(player);
-            case BLOCK: return event -> new BlockGui(plugin, type, player).open(player);
-            case EVENT: return event -> new EventGui(plugin, type, player).open(player);
+            case TIME: return event -> new TimeGui(plugin, type, player).open(player, this);
+            case COMBAT: return event -> new CombatGui(plugin, type, player).open(player, this);
+            case BLOCK: return event -> new BlockGui(plugin, type, player).open(player, this);
+            case EVENT: return event -> new EventGui(plugin, type, player).open(player, this);
         }
         return null;
     }

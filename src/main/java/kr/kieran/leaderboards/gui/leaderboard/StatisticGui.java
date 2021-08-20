@@ -49,7 +49,7 @@ public abstract class StatisticGui extends PopulateGui
                     {
                         return plugin.getPlayerManager().getEntriesBy(statistic);
                     }
-                }.open(player);
+                }.open(player, this);
             case ALL_FACTIONS:
                 return event -> new FactionGui(plugin, statistic.getNiceName(), type)
                 {
@@ -58,7 +58,7 @@ public abstract class StatisticGui extends PopulateGui
                     {
                         return plugin.getFactionManager().getEntriesBy(statistic);
                     }
-                }.open(player);
+                }.open(player, this);
             case OWN_FACTION:
                 Faction faction = MPlayer.get(player).getFaction();
                 return event -> new PlayerGui(plugin, statistic.getNiceName(), type)
@@ -72,7 +72,7 @@ public abstract class StatisticGui extends PopulateGui
                                 .filter(entry -> MPlayer.get(entry.getRepresented().getUniqueId().toString()).getFaction() == faction)
                                 .collect(Collectors.toList());
                     }
-                }.open(player);
+                }.open(player, this);
         }
         return null;
     }
