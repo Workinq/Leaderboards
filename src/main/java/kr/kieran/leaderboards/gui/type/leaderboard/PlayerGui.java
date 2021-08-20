@@ -3,12 +3,14 @@ package kr.kieran.leaderboards.gui.type.leaderboard;
 import dev.triumphteam.gui.guis.GuiItem;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
+import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
 import kr.kieran.leaderboards.utility.Color;
 import kr.kieran.leaderboards.utility.SkullBuilder;
 import kr.kieran.leaderboards.utility.SkullUtil;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.stream.Collectors;
@@ -16,9 +18,9 @@ import java.util.stream.Collectors;
 public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
 {
 
-    public PlayerGui(LeaderboardsPlugin plugin, String statistic, LeaderboardType type)
+    public PlayerGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
     {
-        super(plugin, statistic, type);
+        super(plugin, statistic, type, player);
 
         // Populate
         this.populateGui();

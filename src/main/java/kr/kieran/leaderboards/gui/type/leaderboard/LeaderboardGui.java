@@ -2,39 +2,40 @@ package kr.kieran.leaderboards.gui.type.leaderboard;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.InteractionModifier;
-import dev.triumphteam.gui.guis.BaseGui;
 import dev.triumphteam.gui.guis.GuiItem;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
+import kr.kieran.leaderboards.gui.type.CacheGui;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
+import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public abstract class LeaderboardGui<T> extends BaseGui
+public abstract class LeaderboardGui<T> extends CacheGui
 {
 
     // Store the rank slots, in order from 1 to 9
     private static final int[] SLOTS = new int[]{14, 22, 23, 24, 30, 31, 32, 33, 34, 35};
 
-    protected final LeaderboardsPlugin plugin;
+    protected final LeaderboardStatistic statistic;
 
-    public LeaderboardGui(LeaderboardsPlugin plugin, String statistic, LeaderboardType type)
+    public LeaderboardGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
     {
-        super(plugin.getConfig().getInt("guis.leaderboard.rows"), Color.color(plugin.getConfig().getString("guis.leaderboard.name").replace("%stat%", statistic).replace("%type%", type.getName())), InteractionModifier.VALUES);
+        super(plugin, plugin.getConfig().getInt("guis.leaderboard.rows"), Color.color(plugin.getConfig().getString("guis.leaderboard.name").replace("%stat%", statistic.getNiceName()).replace("%type%", type.getName())), InteractionModifier.VALUES, player);
 
         // Assign
-        this.plugin = plugin;
+        this.statistic = statistic;
     }
 
     protected void populateGui()
     {
         // Get a list of entries but trim the list to 9 as that's all that can fit
-        List<LeaderboardEntry<T>> entries = this.getEntries().stream().limit(9).collect(Collectors.toList());
-        for (int i = 0; i < entries.size(); i++)
+        List<LeaderboardEntry<T>> entries = this.getEntries();
+        for (int i = 0; i < Math.min(9, entries.size()); i++)
         {
             LeaderboardEntry<T> entry = entries.get(i);
             GuiItem item = this.getItemFrom(i + 1, entry);

@@ -5,9 +5,11 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
+import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.stream.Collectors;
@@ -15,9 +17,9 @@ import java.util.stream.Collectors;
 public abstract class FactionGui extends LeaderboardGui<Faction>
 {
 
-    public FactionGui(LeaderboardsPlugin plugin, String statistic, LeaderboardType type)
+    public FactionGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
     {
-        super(plugin, statistic, type);
+        super(plugin, statistic, type, player);
 
         // Populate
         this.populateGui();

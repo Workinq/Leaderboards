@@ -14,15 +14,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class LeaderboardSelectGui extends PopulateGui
 {
 
-    private final LeaderboardsPlugin plugin;
     private final LeaderboardType type;
 
     public LeaderboardSelectGui(LeaderboardsPlugin plugin, LeaderboardType type, Player player)
     {
         super(plugin, "guis.lb-menu", player);
 
-        // Assign
-        this.plugin = plugin;
         this.type = type;
 
         // Populate

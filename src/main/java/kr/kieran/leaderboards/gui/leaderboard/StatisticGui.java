@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public abstract class StatisticGui extends PopulateGui
 {
 
-    protected final LeaderboardsPlugin plugin;
     protected final LeaderboardType type;
 
     public StatisticGui(LeaderboardsPlugin plugin, LeaderboardType type, String path, Player player)
@@ -28,7 +27,6 @@ public abstract class StatisticGui extends PopulateGui
         super(plugin, path, player);
 
         // Assign
-        this.plugin = plugin;
         this.type = type;
 
         // Populate
@@ -42,7 +40,7 @@ public abstract class StatisticGui extends PopulateGui
         switch (type)
         {
             case ALL_PLAYERS:
-                return event -> new PlayerGui(plugin, statistic.getNiceName(), type)
+                return event -> new PlayerGui(plugin, statistic, type, player)
                 {
                     @Override
                     public List<LeaderboardEntry<OfflinePlayer>> getEntries()
@@ -51,7 +49,7 @@ public abstract class StatisticGui extends PopulateGui
                     }
                 }.open(player, this);
             case ALL_FACTIONS:
-                return event -> new FactionGui(plugin, statistic.getNiceName(), type)
+                return event -> new FactionGui(plugin, statistic, type, player)
                 {
                     @Override
                     public List<LeaderboardEntry<Faction>> getEntries()
@@ -61,7 +59,7 @@ public abstract class StatisticGui extends PopulateGui
                 }.open(player, this);
             case OWN_FACTION:
                 Faction faction = MPlayer.get(player).getFaction();
-                return event -> new PlayerGui(plugin, statistic.getNiceName(), type)
+                return event -> new PlayerGui(plugin, statistic, type, player)
                 {
                     @Override
                     public List<LeaderboardEntry<OfflinePlayer>> getEntries()

@@ -3,30 +3,26 @@ package kr.kieran.leaderboards.gui.type;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.components.InteractionModifier;
-import dev.triumphteam.gui.guis.BaseGui;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class PopulateGui extends BaseGui
+public abstract class PopulateGui extends CacheGui
 {
 
-    private final LeaderboardsPlugin plugin;
+    protected final LeaderboardsPlugin plugin;
     private final String path;
-    protected final Player player;
 
     public PopulateGui(LeaderboardsPlugin plugin, String path, Player player)
     {
-        super(plugin.getConfig().getInt(path + ".rows"), Color.color(plugin.getConfig().getString(path + ".name")), InteractionModifier.VALUES);
+        super(plugin, plugin.getConfig().getInt(path + ".rows"), Color.color(plugin.getConfig().getString(path + ".name")), InteractionModifier.VALUES, player);
 
         // Assign
         this.plugin = plugin;
         this.path = path;
-        this.player = player;
     }
 
     protected void populateGui()
@@ -55,10 +51,5 @@ public abstract class PopulateGui extends BaseGui
     }
 
     protected abstract GuiAction<InventoryClickEvent> getAction(String actionRaw);
-
-    public void openLater(HumanEntity player)
-    {
-        plugin.getServer().getScheduler().runTaskLater(plugin, () -> this.open(player), 2L);
-    }
 
 }
