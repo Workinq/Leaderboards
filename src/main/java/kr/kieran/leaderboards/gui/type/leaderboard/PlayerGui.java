@@ -8,7 +8,6 @@ import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
 import kr.kieran.leaderboards.utility.Color;
 import kr.kieran.leaderboards.utility.SkullBuilder;
-import kr.kieran.leaderboards.utility.SkullUtil;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -58,9 +57,9 @@ public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
                 .asGuiItem();
     }
 
-    private static SkullBuilder getBuilderFrom(OfflinePlayer player)
+    private SkullBuilder getBuilderFrom(OfflinePlayer player)
     {
-        String texture = SkullUtil.getSkullTexture(SkullUtil.getSkullItem(player.getUniqueId(), player.getName()));
+        String texture = plugin.getTextureManager().getSkullTexture(plugin.getTextureManager().getSkullItem(player.getUniqueId(), player.getName()));
         SkullBuilder head;
         if (texture == null) head = SkullBuilder.from(new ItemStack(Material.SKULL_ITEM, 1, (short) 3)).owner(player);
         else head = SkullBuilder.from(texture);

@@ -7,12 +7,15 @@ import kr.kieran.leaderboards.command.LeaderboardsCommand;
 import kr.kieran.leaderboards.database.Database;
 import kr.kieran.leaderboards.listener.PlayerConnectionListener;
 import kr.kieran.leaderboards.listener.ProfileStatisticListener;
+import kr.kieran.leaderboards.listener.TextureCacheListener;
 import kr.kieran.leaderboards.manager.FactionStatisticManager;
 import kr.kieran.leaderboards.manager.PlayerStatisticManager;
 import kr.kieran.leaderboards.manager.PreviousGuiManager;
 import kr.kieran.leaderboards.manager.ProfileManager;
+import kr.kieran.leaderboards.manager.SkullTextureManager;
 import kr.kieran.leaderboards.task.ProfileSaveTask;
 import kr.kieran.leaderboards.task.ProfileTimePlayedTask;
+import kr.kieran.leaderboards.task.TextureUpdateTask;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -42,6 +45,10 @@ public class LeaderboardsPlugin extends JavaPlugin
     // MANAGER: PREVIOUS GUI
     private PreviousGuiManager guiManager;
     public PreviousGuiManager getGuiManager() { return guiManager; }
+
+    // MANAGER: SKULL TEXTURES
+    private SkullTextureManager textureManager;
+    public SkullTextureManager getTextureManager() { return textureManager; }
 
     // TASK CHAIN
     private TaskChainFactory taskChain;
@@ -73,6 +80,7 @@ public class LeaderboardsPlugin extends JavaPlugin
         this.taskChain.shutdown(60, TimeUnit.SECONDS);
 
         // Manager shutdown
+        this.textureManager.disable();
         this.guiManager.disable();
         this.playerManager.disable();
         this.factionManager.disable();
@@ -87,12 +95,14 @@ public class LeaderboardsPlugin extends JavaPlugin
         this.factionManager = new FactionStatisticManager(this);
         this.playerManager = new PlayerStatisticManager(this);
         this.guiManager = new PreviousGuiManager();
+        this.textureManager = new SkullTextureManager(this);
     }
 
     private void registerListeners()
     {
         this.getServer().getPluginManager().registerEvents(new PlayerConnectionListener(this), this);
         this.getServer().getPluginManager().registerEvents(new ProfileStatisticListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new TextureCacheListener(this), this);
     }
 
     private void registerCommands()
@@ -102,8 +112,9 @@ public class LeaderboardsPlugin extends JavaPlugin
 
     private void registerTasks()
     {
-        this.tasks.add(new ProfileSaveTask(this).runTaskTimer(this, this.getConfig().getInt("profile-update-frequency") * 20L, this.getConfig().getInt("profile-update-frequency") * 20L));
-        this.tasks.add(new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("time-check-frequency") * 20L));
+        this.tasks.add(new ProfileSaveTask(this).runTaskTimer(this, this.getConfig().getInt("tasks.profile-update-frequency") * 20L, this.getConfig().getInt("tasks.profile-update-frequency") * 20L));
+        this.tasks.add(new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("tasks.time-check-frequency") * 20L));
+        this.tasks.add(new TextureUpdateTask(this).runTaskTimerAsynchronously(this, this.getConfig().getInt("tasks.texture-update-frequency") * 20L, this.getConfig().getInt("tasks.texture-update-frequency") * 20L));
     }
 
 }

@@ -1,4 +1,4 @@
-package kr.kieran.leaderboards.utility;
+package kr.kieran.leaderboards.manager;
 
 import com.google.common.collect.Iterables;
 import com.massivecraft.factions.entity.Skulls;
@@ -15,32 +15,70 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
-public class SkullUtil
+public class SkullTextureManager
 {
 
-    private static final Map<UUID, String> TEXTURE_CACHE = new HashMap<>();
-    private static final LeaderboardsPlugin PLUGIN = JavaPlugin.getPlugin(LeaderboardsPlugin.class);
+    private final LeaderboardsPlugin plugin;
+    private final Map<UUID, String> textures = new HashMap<>();
+    public Map<UUID, String> getTextures() { return Collections.unmodifiableMap(this.textures); }
 
-    public static boolean textureExists(UUID uniqueId) { return TEXTURE_CACHE.containsKey(uniqueId); }
-    public static void cacheTexture(UUID uniqueId, String texture) { TEXTURE_CACHE.put(uniqueId, texture); }
-    public static void cacheTexture(Player player)
+    public SkullTextureManager(LeaderboardsPlugin plugin)
+    {
+        this.plugin = plugin;
+        this.registerTextures();
+    }
+
+    private void registerTextures()
+    {
+        plugin.newChain()
+                .async(() -> {
+                    try (
+                            Connection connection = plugin.getDatabaseManager().getConnection();
+                            PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_skulls`.`unique_id`, `leaderboards_skulls`.`texture` FROM `leaderboards_skulls`;")
+                    )
+                    {
+                        ResultSet resultSet = statement.executeQuery();
+                        while (resultSet.next())
+                        {
+                            this.textures.put(
+                                    UUID.fromString(resultSet.getString("unique_id")),
+                                    resultSet.getString("texture")
+                            );
+                        }
+                    }
+                    catch (SQLException e)
+                    {
+                        plugin.getLogger().log(Level.SEVERE, "Failed to register cached skull textures: " + e.getMessage());
+                    }
+                })
+                .execute();
+    }
+
+    public String get(UUID uniqueId) { return this.textures.get(uniqueId); }
+    public void add(UUID uniqueId, String texture) { this.textures.put(uniqueId, texture); }
+    public void add(Player player)
     {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         Property property = Iterables.getFirst(entityPlayer.getProfile().getProperties().get("textures"), null);
-        if (property != null) TEXTURE_CACHE.put(player.getUniqueId(), property.getValue());
+        if (property != null) this.add(player.getUniqueId(), property.getValue());
     }
 
-    public static ItemStack getSkullItem(UUID uuid, String name)
+    public ItemStack getSkullItem(UUID uuid, String name)
     {
         // Args
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        String texture = TEXTURE_CACHE.getOrDefault(uuid, Skulls.get().skullTextureCache.getOrDefault(uuid, null));
+        String texture = this.textures.getOrDefault(uuid, Skulls.get().skullTextureCache.getOrDefault(uuid, null));
 
         // Get the skull texture for the specified player
         if (texture != null)
@@ -63,14 +101,14 @@ public class SkullUtil
         head.setItemMeta(skullMeta);
 
         // Cache
-        Bukkit.getScheduler().runTaskLater(PLUGIN, () -> {
-            String textureLine = SkullUtil.getSkullTexture(head);
-            if (textureLine != null) TEXTURE_CACHE.putIfAbsent(uuid, textureLine);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            String textureLine = this.getSkullTexture(head);
+            if (textureLine != null) this.textures.putIfAbsent(uuid, textureLine);
         }, 20L);
         return head;
     }
 
-    public static String getSkullTexture(ItemStack itemStack)
+    public String getSkullTexture(ItemStack itemStack)
     {
         net.minecraft.server.v1_8_R3.ItemStack vanillaStack = CraftItemStack.asNMSCopy(itemStack);
         NBTTagCompound baseCompound = vanillaStack.getTag();
@@ -82,5 +120,7 @@ public class SkullUtil
         Property property = Iterables.getFirst(profile.getProperties().get("textures"), null);
         return (property == null) ? null : property.getValue();
     }
+
+    public void disable() { this.textures.clear(); }
 
 }

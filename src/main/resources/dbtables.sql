@@ -15,3 +15,10 @@ CREATE TABLE IF NOT EXISTS `leaderboards_players` (
     `koth_wins` INT NOT NULL DEFAULT '0',
     CONSTRAINT `leaderboards_players_pk` PRIMARY KEY (`unique_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `leaderboards_skulls`
+(
+    `unique_id` VARCHAR(36) NOT NULL,
+    `texture` LONGTEXT NOT NULL,
+    CONSTRAINT `leaderboards_skulls_pk` PRIMARY KEY (`unique_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
