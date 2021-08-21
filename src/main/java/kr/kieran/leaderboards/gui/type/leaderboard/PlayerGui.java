@@ -2,6 +2,7 @@ package kr.kieran.leaderboards.gui.type.leaderboard;
 
 import dev.triumphteam.gui.guis.GuiItem;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
+import kr.kieran.leaderboards.model.IndexedLeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
@@ -13,6 +14,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
@@ -24,6 +26,26 @@ public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
 
         // Populate
         this.populateGui();
+    }
+
+    @Override
+    public GuiItem getOwnItem()
+    {
+        // Args
+        List<LeaderboardEntry<OfflinePlayer>> entries = this.getEntries();
+        IndexedLeaderboardEntry<OfflinePlayer> indexedEntry = null;
+
+        // Check for a matching entry
+        for (int i = 0; i < entries.size(); i++)
+        {
+            LeaderboardEntry<OfflinePlayer> entry = entries.get(i);
+            if (!entry.getRepresented().getUniqueId().equals(player.getUniqueId())) continue;
+            indexedEntry = new IndexedLeaderboardEntry<>(entry.getRepresented(), entry.getValue(), i + 1);
+        }
+
+        // Return the item using the below method
+        if (indexedEntry == null) return null;
+        return this.getItemFrom(indexedEntry.getIndex(), indexedEntry);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package kr.kieran.leaderboards.gui.type.leaderboard;
 
 import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
+import kr.kieran.leaderboards.model.IndexedLeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
@@ -12,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class FactionGui extends LeaderboardGui<Faction>
@@ -23,6 +26,27 @@ public abstract class FactionGui extends LeaderboardGui<Faction>
 
         // Populate
         this.populateGui();
+    }
+
+    @Override
+    public GuiItem getOwnItem()
+    {
+        // Args
+        Faction faction = MPlayer.get(player).getFaction();
+        List<LeaderboardEntry<Faction>> entries = this.getEntries();
+        IndexedLeaderboardEntry<Faction> indexedEntry = null;
+
+        // Check for a matching entry
+        for (int i = 0; i < entries.size(); i++)
+        {
+            LeaderboardEntry<Faction> entry = entries.get(i);
+            if (entry.getRepresented() != faction) continue;
+            indexedEntry = new IndexedLeaderboardEntry<>(entry.getRepresented(), entry.getValue(), i + 1);
+        }
+
+        // Return the item using the below method
+        if (indexedEntry == null) return null;
+        return this.getItemFrom(indexedEntry.getIndex(), indexedEntry);
     }
 
     @Override

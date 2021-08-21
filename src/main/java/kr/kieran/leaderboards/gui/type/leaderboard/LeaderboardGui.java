@@ -42,10 +42,14 @@ public abstract class LeaderboardGui<T> extends CacheGui
             this.setItem(SLOTS[i], item);
         }
 
+        // Display own item
+        this.setItem(plugin.getConfig().getInt("guis.leaderboard.score-slot"), this.getOwnItem());
+
         // Filler
         this.getFiller().fill(ItemBuilder.from(new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7)).setName(" ").asGuiItem());
     }
 
+    public abstract GuiItem getOwnItem();
     public abstract GuiItem getItemFrom(int index, LeaderboardEntry<T> entry);
     public abstract List<LeaderboardEntry<T>> getEntries();
 

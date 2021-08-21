@@ -202,6 +202,7 @@ guis:
   leaderboard:
     name: '&aTop 9 %stat% %type%'
     rows: 5
+    score-slot: 19
 
 items:
   index-to-block:
