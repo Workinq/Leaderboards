@@ -24,14 +24,23 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 
 public class SkullTextureManager
 {
 
     private final LeaderboardsPlugin plugin;
+
+    // Texture cache
     private final Map<UUID, String> textures = new HashMap<>();
     public Map<UUID, String> getTextures() { return Collections.unmodifiableMap(this.textures); }
+
+    // Textures to be updated in database
+    private final ConcurrentMap<UUID, String> updates = new ConcurrentHashMap<>();
+    public synchronized Map<UUID, String> getUpdates() { return updates; }
+    public void update(UUID uniqueId, String texture) { this.updates.put(uniqueId, texture); }
 
     public SkullTextureManager(LeaderboardsPlugin plugin)
     {
@@ -67,11 +76,12 @@ public class SkullTextureManager
 
     public String get(UUID uniqueId) { return this.textures.get(uniqueId); }
     public void add(UUID uniqueId, String texture) { this.textures.put(uniqueId, texture); }
-    public void add(Player player)
+
+    public String getTextureFrom(Player player)
     {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         Property property = Iterables.getFirst(entityPlayer.getProfile().getProperties().get("textures"), null);
-        if (property != null) this.add(player.getUniqueId(), property.getValue());
+        return property == null ? null : property.getValue();
     }
 
     public ItemStack getSkullItem(UUID uuid, String name)
