@@ -46,14 +46,14 @@ public abstract class FactionGui extends LeaderboardGui<Faction>
 
         // Return the item using the below method
         if (indexedEntry == null) return null;
-        return this.getItemFrom(indexedEntry.getIndex(), indexedEntry);
+        return this.getItemFrom(indexedEntry.getIndex(), indexedEntry, true);
     }
 
     @Override
-    public GuiItem getItemFrom(int index, LeaderboardEntry<Faction> entry)
+    public GuiItem getItemFrom(int index, LeaderboardEntry<Faction> entry, boolean own)
     {
         Faction faction = entry.getRepresented();
-        ItemStack item = getItemFrom(plugin.getConfig().getString("items.index-to-block." + index));
+        ItemStack item = this.getItemFrom(index, own);
         return ItemBuilder
                 .from(item)
                 .setName(Color.color(plugin.getConfig().getString("items.faction-entry.name").replace("%index%", String.valueOf(index)).replace("%name%", faction.getName())))
@@ -62,6 +62,11 @@ public abstract class FactionGui extends LeaderboardGui<Faction>
                         .map(text -> text.replace("%size%", String.valueOf(faction.getMPlayers().size())).replace("%value%", statistic.getFormattedValue().apply(entry.getValue())))
                         .collect(Collectors.toList())))
                 .asGuiItem();
+    }
+
+    private ItemStack getItemFrom(int index, boolean own)
+    {
+        return getItemFrom(own ? plugin.getConfig().getString("items.own-score-block") : plugin.getConfig().getString("items.index-to-block." + index));
     }
 
     private static ItemStack getItemFrom(String input)

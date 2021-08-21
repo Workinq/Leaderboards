@@ -38,7 +38,7 @@ public abstract class LeaderboardGui<T> extends CacheGui
         for (int i = 0; i < Math.min(9, entries.size()); i++)
         {
             LeaderboardEntry<T> entry = entries.get(i);
-            GuiItem item = this.getItemFrom(i + 1, entry);
+            GuiItem item = this.getItemFrom(i + 1, entry, false);
             this.setItem(SLOTS[i], item);
         }
 
@@ -50,7 +50,7 @@ public abstract class LeaderboardGui<T> extends CacheGui
     }
 
     public abstract GuiItem getOwnItem();
-    public abstract GuiItem getItemFrom(int index, LeaderboardEntry<T> entry);
+    public abstract GuiItem getItemFrom(int index, LeaderboardEntry<T> entry, boolean own);
     public abstract List<LeaderboardEntry<T>> getEntries();
 
 }

@@ -44,11 +44,11 @@ public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
 
         // Return the item using the below method
         if (indexedEntry == null) return null;
-        return this.getItemFrom(indexedEntry.getIndex(), indexedEntry);
+        return this.getItemFrom(indexedEntry.getIndex(), indexedEntry, true);
     }
 
     @Override
-    public GuiItem getItemFrom(int index, LeaderboardEntry<OfflinePlayer> entry)
+    public GuiItem getItemFrom(int index, LeaderboardEntry<OfflinePlayer> entry, boolean own)
     {
         OfflinePlayer player = entry.getRepresented();
         return getBuilderFrom(player)
