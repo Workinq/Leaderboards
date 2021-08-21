@@ -218,6 +218,7 @@ items:
     7: GOLD_ORE:0
     8: IRON_IRE:0
     9: REDSTONE_ORE:0
+  own-score-block: BEACON:0
   faction-entry:
     name: '&3&l#%index% &r&b- %name%'
     lore:
