@@ -5,9 +5,12 @@ mysql:
   user: everything
   password: root
 
-profile-update-frequency: 150 # in seconds
-update-frequency: 300 # in seconds
-time-check-frequency: 10 # in seconds
+tasks:
+  profile-update-frequency: 150 # in seconds
+  update-frequency: 300 # in seconds
+  time-check-frequency: 10 # in seconds
+  texture-update-frequency: 600 # in seconds
+
 messages:
   not-a-player: '&cOnly in-game players can use this command.'
   invalid-faction: '&cYou must belong to a faction to view the leaderboard.'

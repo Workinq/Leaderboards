@@ -40,7 +40,7 @@ public class ProfileTimePlayedTask extends BukkitRunnable
 
             // The player is afk so we'll skip over them
             if (profile.getLastLocation().equals(currentLocation)) continue;
-            profile.setTimePlayed(profile.getTimePlayed() + plugin.getConfig().getInt("time-check-frequency"));
+            profile.setTimePlayed(profile.getTimePlayed() + plugin.getConfig().getInt("tasks.time-check-frequency"));
             profile.setLastLocation(currentLocation);
         }
     }
