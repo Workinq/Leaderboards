@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS `leaderboards_players`
 CREATE TABLE IF NOT EXISTS `leaderboards_skulls`
 (
     `unique_id` VARCHAR(36) NOT NULL,
-    `texture` LONGTEXT NOT NULL,
+    `texture` TEXT NOT NULL,
     CONSTRAINT `leaderboards_skulls_pk` PRIMARY KEY (`unique_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

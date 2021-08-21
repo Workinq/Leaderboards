@@ -45,7 +45,7 @@ public class Database
         plugin.getLogger().log(Level.INFO, "Setting up database environment...");
 
         // Driver & pool size
-        this.dataSource.setMaximumPoolSize(10);
+        this.dataSource.setMaximumPoolSize(8);
         this.dataSource.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
 
         // Credentials
