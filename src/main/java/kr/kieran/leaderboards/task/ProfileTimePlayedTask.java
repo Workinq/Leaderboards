@@ -23,7 +23,6 @@ public class ProfileTimePlayedTask extends BukkitRunnable
         for (Profile profile : plugin.getProfileManager().getProfiles())
         {
             Player player = plugin.getServer().getPlayer(profile.getUniqueId());
-            // TODO: Should probably remove the profile entry if the player is null
             if (player == null) continue;
 
             // Get the player's locations

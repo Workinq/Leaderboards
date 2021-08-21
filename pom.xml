@@ -104,7 +104,7 @@
         <dependency>
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-gui</artifactId>
-            <version>3.0.3</version>
+            <version>3.0.3-OFFLINE</version>
             <scope>compile</scope>
         </dependency>
         <!-- MassiveCore -->

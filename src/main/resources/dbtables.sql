@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS `leaderboards_players` (
+CREATE TABLE IF NOT EXISTS `leaderboards_players`
+(
     `unique_id` VARCHAR(36) NOT NULL,
     `time_connected` BIGINT NOT NULL DEFAULT '0',
     `time_played` BIGINT NOT NULL DEFAULT '0',
