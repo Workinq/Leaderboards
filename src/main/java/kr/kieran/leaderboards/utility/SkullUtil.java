@@ -1,6 +1,7 @@
 package kr.kieran.leaderboards.utility;
 
 import com.google.common.collect.Iterables;
+import com.massivecraft.factions.entity.Skulls;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
@@ -39,7 +40,7 @@ public class SkullUtil
     {
         // Args
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        String texture = TEXTURE_CACHE.getOrDefault(uuid, null);
+        String texture = TEXTURE_CACHE.getOrDefault(uuid, Skulls.get().skullTextureCache.getOrDefault(uuid, null));
 
         // Get the skull texture for the specified player
         if (texture != null)
