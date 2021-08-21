@@ -54,8 +54,6 @@ public class PlayerConnectionListener implements Listener
                 profile = new Profile(
                         uniqueId,
                         resultSet.getLong("time_played"),
-                        resultSet.getInt("blocks_broken"),
-                        resultSet.getInt("blocks_placed"),
                         resultSet.getInt("spawners_placed"),
                         resultSet.getInt("lms_wins"),
                         resultSet.getInt("envoy_claims")
