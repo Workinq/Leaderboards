@@ -32,7 +32,7 @@ public class PlayerConnectionListener implements Listener
         UUID uniqueId = event.getUniqueId();
         try (
                 Connection connection = plugin.getDatabaseManager().getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`blocks_placed`, `leaderboards_players`.`spawners_placed`, `leaderboards_players`.`lms_wins`, `leaderboards_players`.`envoy_claims` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`spawners_placed`, `leaderboards_players`.`envoy_claims` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
         )
         {
             statement.setString(1, uniqueId.toString());
@@ -55,7 +55,6 @@ public class PlayerConnectionListener implements Listener
                         uniqueId,
                         resultSet.getLong("time_played"),
                         resultSet.getInt("spawners_placed"),
-                        resultSet.getInt("lms_wins"),
                         resultSet.getInt("envoy_claims")
                 );
             }

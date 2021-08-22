@@ -21,21 +21,16 @@ public class Profile
     public int getSpawnersPlaced() { return spawnersPlaced; }
     public void setSpawnersPlaced(int spawnersPlaced) { this.spawnersPlaced = spawnersPlaced; }
 
-    private int lmsWins;
-    public int getLmsWins() { return lmsWins; }
-    public void setLmsWins(int lmsWins) { this.lmsWins = lmsWins; }
-
     private int envoyClaims;
     public int getEnvoyClaims() { return envoyClaims; }
     public void setEnvoyClaims(int envoyClaims) { this.envoyClaims = envoyClaims; }
 
-    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0 ,0); }
-    public Profile(UUID uniqueId, long timePlayed, int spawnersPlaced, int lmsWins, int envoyClaims)
+    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0); }
+    public Profile(UUID uniqueId, long timePlayed, int spawnersPlaced, int envoyClaims)
     {
         this.uniqueId = uniqueId;
         this.timePlayed = timePlayed;
         this.spawnersPlaced = spawnersPlaced;
-        this.lmsWins = lmsWins;
         this.envoyClaims = envoyClaims;
     }
 

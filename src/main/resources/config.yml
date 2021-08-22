@@ -181,13 +181,13 @@ guis:
     name: '&aEvent Leaderboards'
     rows: 3
     items:
-      lms-wins:
+      event-wins:
         material: DIAMOND_HELMET
         data: 0
-        name: '&bLMS Wins'
+        name: '&bEvent Wins'
         lore: []
         slot: 11
-        action: LMS_WINS
+        action: EVENT_WINS
       envoy-claims:
         material: CHEST
         data: 0

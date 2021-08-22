@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `leaderboards_players`
     `blocks_travelled` INT NOT NULL DEFAULT '0',
     `cane_broken` INT NOT NULL DEFAULT '0',
     `spawners_placed` INT NOT NULL DEFAULT '0',
-    `lms_wins` INT NOT NULL DEFAULT '0',
+    `event_wins` INT NOT NULL DEFAULT '0',
     `envoy_claims` INT NOT NULL DEFAULT '0',
     `koth_wins` INT NOT NULL DEFAULT '0',
     CONSTRAINT `leaderboards_players_pk` PRIMARY KEY (`unique_id`)

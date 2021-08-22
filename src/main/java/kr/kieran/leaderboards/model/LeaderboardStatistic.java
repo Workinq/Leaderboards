@@ -24,7 +24,7 @@ public enum LeaderboardStatistic
     SPAWNERS_PLACED("Mob Spawners Placed", "spawners_placed", LeaderboardStatistic::insertCommas),
 
     // EVENT STATISTICS
-    LMS_WINS("LMS Wins", "lms_wins", LeaderboardStatistic::insertCommas),
+    EVENT_WINS("Event Wins", "event_wins", LeaderboardStatistic::insertCommas),
     ENVOY_CLAIMS("Envoys Claimed", "envoy_claims", LeaderboardStatistic::insertCommas),
     KOTH_WINS("KoTH Wins", "koth_wins", LeaderboardStatistic::insertCommas),
 

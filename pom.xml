@@ -142,6 +142,13 @@
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Events -->
+        <dependency>
+            <groupId>com.infamous</groupId>
+            <artifactId>infamous-events</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- TaskChain -->
         <dependency>
             <groupId>co.aikar</groupId>
