@@ -1,10 +1,13 @@
-package kr.kieran.leaderboards.manager;
+package kr.kieran.leaderboards.manager.statistic;
 
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplacer;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +26,17 @@ public abstract class StatisticManager<T>
     {
         this.plugin = plugin;
         this.task = this.getUpdateTask();
+        this.registerPlaceholders();
     }
 
     public abstract BukkitTask getUpdateTask();
+
+    // Hologram placeholders
+    protected abstract void registerPlaceholders();
+    protected void register(String placeholder, PlaceholderReplacer replacer)
+    {
+        HologramsAPI.registerPlaceholder(plugin, placeholder, 300.0d, replacer);
+    }
 
     public void disable()
     {

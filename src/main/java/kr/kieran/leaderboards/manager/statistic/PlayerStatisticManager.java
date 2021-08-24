@@ -1,8 +1,9 @@
-package kr.kieran.leaderboards.manager;
+package kr.kieran.leaderboards.manager.statistic;
 
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
+import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -50,7 +51,6 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                                 .sorted((first, last) -> Integer.compare(last.getValue(), first.getValue()))
                                 .collect(Collectors.toList());
 
-                        // Replace the cache
                         PlayerStatisticManager.this.entries.put(statistic, entries);
                     }
                 }
@@ -60,6 +60,35 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                 }
             }
         }.runTaskTimerAsynchronously(plugin, 0L, plugin.getConfig().getLong("update-frequency") * 20L);
+    }
+
+    @Override
+    protected void registerPlaceholders()
+    {
+        for (LeaderboardStatistic statistic : LeaderboardStatistic.values())
+        {
+            for (int i = 0; i < plugin.getConfig().getInt("placeholder.limit"); i++)
+            {
+                int finalIndex = i;
+                this.register(plugin.getConfig().getString("placeholder.player.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
+                    try
+                    {
+                        LeaderboardEntry<OfflinePlayer> entry = this.entries.get(statistic).get(finalIndex);
+                        OfflinePlayer player = entry.getRepresented();
+                        if (player == null) return plugin.getConfig().getString("placeholder.player.bad-player");
+
+                        return Color.color(plugin.getConfig().getString("placeholder.player.format")
+                                .replace("%index%", String.format("%,d", finalIndex + 1))
+                                .replace("%player%", player.getName())
+                                .replace("%value%", statistic.getFormattedValue().apply(entry.getValue())));
+                    }
+                    catch (IndexOutOfBoundsException e)
+                    {
+                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds"));
+                    }
+                });
+            }
+        }
     }
 
 }

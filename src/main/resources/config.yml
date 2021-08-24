@@ -207,6 +207,18 @@ guis:
     rows: 5
     score-slot: 19
 
+placeholder:
+  limit: 9
+  out-of-bounds: '&floading...'
+  faction:
+    entry: '{leaderboards_faction_%statistic%_%index%}'
+    bad-faction: 'NaF'
+    format: '&3&l%index%. &r&f%faction% - &b%value%'
+  player:
+    entry: '{leaderboards_player_%statistic%_%index%}'
+    bad-faction: 'NaP'
+    format: '&3&l%index%. &r&f%player% - &b%value%'
+
 items:
   index-to-block:
     1: DIAMOND_BLOCK:0

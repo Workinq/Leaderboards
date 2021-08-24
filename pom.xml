@@ -83,6 +83,11 @@
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
+        <!-- HolographicDisplays -->
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -147,6 +152,13 @@
             <groupId>com.infamous</groupId>
             <artifactId>infamous-events</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- HolographicDisplays -->
+        <dependency>
+            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <artifactId>holographicdisplays-api</artifactId>
+            <version>2.4.9</version>
             <scope>provided</scope>
         </dependency>
         <!-- TaskChain -->
