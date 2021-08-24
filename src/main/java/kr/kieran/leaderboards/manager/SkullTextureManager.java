@@ -75,7 +75,11 @@ public class SkullTextureManager
     }
 
     public String get(UUID uniqueId) { return this.textures.get(uniqueId); }
-    public void add(UUID uniqueId, String texture) { this.textures.put(uniqueId, texture); }
+    public void add(UUID uniqueId, String texture)
+    {
+        this.textures.put(uniqueId, texture);
+        this.update(uniqueId, texture);
+    }
 
     public String getTextureFrom(Player player)
     {
