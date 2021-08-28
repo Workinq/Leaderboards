@@ -73,11 +73,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!-- Vault -->
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
         <!-- TaskChain -->
         <repository>
             <id>aikar</id>
@@ -87,6 +82,11 @@
         <repository>
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <!-- Triumph GUI -->
+        <repository>
+            <id>local-repo</id>
+            <url>file://${project.basedir}/repo</url>
         </repository>
     </repositories>
 
@@ -109,7 +109,7 @@
         <dependency>
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-gui</artifactId>
-            <version>3.0.3-OFFLINE</version>
+            <version>3.0.3</version>
             <scope>compile</scope>
         </dependency>
         <!-- MassiveCore -->
