@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.massivecraft.massivecore</groupId>
+  <artifactId>MassiveCore</artifactId>
+  <versioning>
+    <versions>
+      <version>2.14.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20210828121726</lastUpdated>
+  </versioning>
+</metadata>
