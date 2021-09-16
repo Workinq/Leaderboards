@@ -2,8 +2,6 @@ package kr.kieran.leaderboards.manager;
 
 import com.infamous.infamousevents.Infamous;
 import com.infamous.infamousevents.data.Account;
-import com.massivecraft.factions.entity.MPlayerStats;
-import com.massivecraft.factions.entity.PlayerStats;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.Profile;
 import me.jordan.canetop.canetop;
@@ -40,7 +38,6 @@ public class ProfileManager
 
     public void save(Connection connection, Player player, Profile profile) throws SQLException
     {
-        PlayerStats stats = MPlayerStats.get().getPlayerStats(player);
         Optional<Account> account = Infamous.getInstance().getAccountController().find(player.getUniqueId());
         try (
                 PreparedStatement statement = connection.prepareStatement("UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`player_deaths` = ?, `leaderboards_players`.`player_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_placed` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`cane_broken` = ?, `leaderboards_players`.`spawners_placed` = ?, `leaderboards_players`.`event_wins` = ?, `leaderboards_players`.`envoy_claims` = ?, `leaderboards_players`.`koth_wins` = ? WHERE `leaderboards_players`.`unique_id` = ?;")
@@ -48,11 +45,11 @@ public class ProfileManager
         {
             statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
             statement.setLong(2, profile.getTimePlayed());
-            statement.setInt(3, stats.getMobsKilled().intValue());
-            statement.setInt(4, stats.getDeaths().intValue());
-            statement.setInt(5, stats.getPlayersKilled().intValue());
-            statement.setInt(6, stats.getBlocksBroken().intValue());
-            statement.setInt(7, stats.getBlocksPlaced().intValue());
+            statement.setInt(3, profile.getMobKills());
+            statement.setInt(4, profile.getDeaths());
+            statement.setInt(5, profile.getPlayerKills());
+            statement.setInt(6, profile.getBlocksBroken());
+            statement.setInt(7, profile.getBlocksPlaced());
             statement.setInt(8, player.getStatistic(Statistic.WALK_ONE_CM));
             statement.setInt(9, new canetop().getScore(profile.getUniqueId()));
             statement.setInt(10, profile.getSpawnersPlaced());

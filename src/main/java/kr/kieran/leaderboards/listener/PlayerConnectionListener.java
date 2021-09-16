@@ -32,7 +32,7 @@ public class PlayerConnectionListener implements Listener
         UUID uniqueId = event.getUniqueId();
         try (
                 Connection connection = plugin.getDatabaseManager().getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`spawners_placed`, `leaderboards_players`.`envoy_claims` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`player_deaths`, `leaderboards_players`.`player_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`blocks_placed`, `leaderboards_players`.`spawners_placed`, `leaderboards_players`.`envoy_claims` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
         )
         {
             statement.setString(1, uniqueId.toString());
@@ -54,6 +54,11 @@ public class PlayerConnectionListener implements Listener
                 profile = new Profile(
                         uniqueId,
                         resultSet.getLong("time_played"),
+                        resultSet.getInt("mob_kills"),
+                        resultSet.getInt("player_deaths"),
+                        resultSet.getInt("player_kills"),
+                        resultSet.getInt("blocks_broken"),
+                        resultSet.getInt("blocks_placed"),
                         resultSet.getInt("spawners_placed"),
                         resultSet.getInt("envoy_claims")
                 );
@@ -86,9 +91,10 @@ public class PlayerConnectionListener implements Listener
                     }
                     catch (SQLException e)
                     {
-                        plugin.getLogger().log(Level.SEVERE, "Failed to update profile information for '" + player.getName() + "': " + e.getMessage());
+                        plugin.getLogger().log(Level.SEVERE, "Failed to update profile for '" + player.getName() + "': " + e.getMessage());
                     }
                 })
+                .sync(() -> plugin.getProfileManager().remove(uniqueId))
                 .execute();
     }
 
