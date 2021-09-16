@@ -35,7 +35,7 @@ public abstract class StatisticManager<T>
     protected abstract void registerPlaceholders();
     protected void register(String placeholder, PlaceholderReplacer replacer)
     {
-        HologramsAPI.registerPlaceholder(plugin, placeholder, 300.0d, replacer);
+        HologramsAPI.registerPlaceholder(plugin, placeholder, 100.0d, replacer);
     }
 
     public void disable()

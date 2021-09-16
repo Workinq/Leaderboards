@@ -2,7 +2,7 @@ name: ${project.name}
 main: ${project.groupId}.${project.artifactId}
 version: ${project.version}
 author: ${project.author}
-depend: [HolographicDisplays, PvPLabCaneTop, PvPLabEnvoy, Koth]
+depend: [Factions, MassiveCore, HolographicDisplays, PvPLabCaneTop, PvPLabEnvoy, Koth]
 commands:
   leaderboards:
     usage: /<command>
