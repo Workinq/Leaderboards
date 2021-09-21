@@ -1,7 +1,5 @@
 package kr.kieran.leaderboards.gui;
 
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
 import dev.triumphteam.gui.components.GuiAction;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
@@ -9,6 +7,8 @@ import kr.kieran.leaderboards.model.LeaderboardType;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.stellardev.galacticskyblock.entity.APlayer;
+import org.stellardev.galacticskyblock.entity.Island;
 
 public class LeaderboardMenuGui extends PopulateGui
 {
@@ -27,17 +27,17 @@ public class LeaderboardMenuGui extends PopulateGui
         LeaderboardType type = LeaderboardType.valueOf(actionRaw);
         switch (type)
         {
-            case OWN_FACTION:
+            case OWN_ISLAND:
                 return event -> {
-                    Faction faction = MPlayer.get(player).getFaction();
-                    if (faction.isSystemFaction())
+                    Island island = APlayer.get(player).getIsland();
+                    if (island.isNone())
                     {
-                        player.sendMessage(Color.color(plugin.getConfig().getString("messages.invalid-faction")));
+                        player.sendMessage(Color.color(plugin.getConfig().getString("messages.invalid-island")));
                         return;
                     }
                     this.open(type);
                 };
-            case ALL_FACTIONS:
+            case ALL_ISLANDS:
             case ALL_PLAYERS:
                 return event -> this.open(type);
         }

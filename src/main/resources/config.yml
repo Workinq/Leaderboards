@@ -13,24 +13,24 @@ tasks:
 
 messages:
   not-a-player: '&cOnly in-game players can use this command.'
-  invalid-faction: '&cYou must belong to a faction to view the leaderboard.'
+  invalid-island: '&cYou must belong to an island to view the leaderboard.'
 
 guis:
   # GUI options for the main menu gui. This gui will show all the different leaderboard
-  # types such as your own faction's leaderboard, all players, etc.
+  # types such as your own island's leaderboard, all players, etc.
   menu:
     name: '&aSelect a Leaderboard'
     rows: 3
     items:
-      own-faction:
+      own-island:
         material: DIAMOND_ORE
         data: 0
-        name: '&aYour Faction''s Leaderboard'
+        name: '&aYour Island''s Leaderboard'
         lore:
           - '&fView a leaderboard of all statistics'
-          - '&fbetween members of your Faction'
+          - '&fbetween members of your Island'
         slot: 10
-        action: OWN_FACTION
+        action: OWN_ISLAND
       all-players:
         material: DIAMOND
         data: 0
@@ -40,16 +40,16 @@ guis:
           - '&findividual player statistics'
         slot: 13
         action: ALL_PLAYERS
-      all-factions:
+      all-islands:
         material: DIAMOND_BLOCK
         data: 0
-        name: '&cAll Faction Leaderboards'
+        name: '&cAll Island Leaderboards'
         lore:
           - '&fView a leaderboard of all combined'
-          - '&fstatistics for Factions ranked'
+          - '&fstatistics for Islands ranked'
           - '&fagainst each other'
         slot: 16
-        action: ALL_FACTIONS
+        action: ALL_ISLANDS
   # GUI options for the Leaderboards main menu. This gui will show all the categories
   # you can view statistics from such as Time stats, Combat stats, etc.
   lb-menu:
@@ -210,13 +210,13 @@ guis:
 placeholder:
   limit: 9
   out-of-bounds: '&floading...'
-  faction:
-    entry: '{leaderboards_faction_%statistic%_%index%}'
-    bad-faction: 'NaF'
-    format: '&3&l%index%. &r&f%faction% - &b%value%'
+  island:
+    entry: '{leaderboards_island_%statistic%_%index%}'
+    bad-island: 'NaI'
+    format: '&3&l%index%. &r&f%island% - &b%value%'
   player:
     entry: '{leaderboards_player_%statistic%_%index%}'
-    bad-faction: 'NaP'
+    bad-player: 'NaP'
     format: '&3&l%index%. &r&f%player% - &b%value%'
 
 items:
@@ -231,7 +231,7 @@ items:
     8: IRON_IRE:0
     9: REDSTONE_ORE:0
   own-score-block: BEACON:0
-  faction-entry:
+  island-entry:
     name: '&3&l#%index% &r&b- %name%'
     lore:
       - ''

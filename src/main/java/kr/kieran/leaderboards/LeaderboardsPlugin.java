@@ -8,7 +8,7 @@ import kr.kieran.leaderboards.database.Database;
 import kr.kieran.leaderboards.listener.PlayerConnectionListener;
 import kr.kieran.leaderboards.listener.ProfileStatisticListener;
 import kr.kieran.leaderboards.listener.TextureCacheListener;
-import kr.kieran.leaderboards.manager.statistic.FactionStatisticManager;
+import kr.kieran.leaderboards.manager.statistic.IslandStatisticManager;
 import kr.kieran.leaderboards.manager.statistic.PlayerStatisticManager;
 import kr.kieran.leaderboards.manager.PreviousGuiManager;
 import kr.kieran.leaderboards.manager.ProfileManager;
@@ -34,9 +34,9 @@ public class LeaderboardsPlugin extends JavaPlugin
     private ProfileManager profileManager;
     public ProfileManager getProfileManager() { return profileManager; }
 
-    // MANAGER: FACTION STATISTIC
-    private FactionStatisticManager factionManager;
-    public FactionStatisticManager getFactionManager() { return factionManager; }
+    // MANAGER: ISLAND STATISTIC
+    private IslandStatisticManager islandManager;
+    public IslandStatisticManager getIslandManager() { return islandManager; }
 
     // MANAGER: PLAYER STATISTIC
     private PlayerStatisticManager playerManager;
@@ -83,7 +83,7 @@ public class LeaderboardsPlugin extends JavaPlugin
         this.textureManager.disable();
         this.guiManager.disable();
         this.playerManager.disable();
-        this.factionManager.disable();
+        this.islandManager.disable();
         this.profileManager.disable();
         this.database.disable();
     }
@@ -92,7 +92,7 @@ public class LeaderboardsPlugin extends JavaPlugin
     {
         this.database = new Database(this);
         this.profileManager = new ProfileManager(this);
-        this.factionManager = new FactionStatisticManager(this);
+        this.islandManager = new IslandStatisticManager(this);
         this.playerManager = new PlayerStatisticManager(this);
         this.guiManager = new PreviousGuiManager();
         this.textureManager = new SkullTextureManager(this);

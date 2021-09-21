@@ -1,14 +1,14 @@
 package kr.kieran.leaderboards.manager.statistic;
 
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.MPlayer;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.stellardev.galacticskyblock.coll.IslandColl;
+import org.stellardev.galacticskyblock.entity.APlayer;
+import org.stellardev.galacticskyblock.entity.Island;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-public class FactionStatisticManager extends StatisticManager<Faction>
+public class IslandStatisticManager extends StatisticManager<Island>
 {
 
-    public FactionStatisticManager(LeaderboardsPlugin plugin)
+    public IslandStatisticManager(LeaderboardsPlugin plugin)
     {
         super(plugin);
     }
@@ -39,22 +39,22 @@ public class FactionStatisticManager extends StatisticManager<Faction>
                 {
                     for (LeaderboardStatistic statistic : LeaderboardStatistic.values())
                     {
-                        List<LeaderboardEntry<Faction>> entries = new LinkedList<>();
-                        for (Faction faction : FactionColl.get().getAll())
+                        List<LeaderboardEntry<Island>> entries = new LinkedList<>();
+                        for (Island island : IslandColl.get().getAll())
                         {
-                            if (faction.isSystemFaction()) continue;
+                            if (island.isNone()) continue;
                             int total = 0;
-                            for (MPlayer mplayer : faction.getMPlayers())
+                            for (APlayer aplayer : island.getAPlayers())
                             {
                                 try (PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`" + statistic.getColumnName() + "` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;"))
                                 {
-                                    statement.setString(1, mplayer.getId());
+                                    statement.setString(1, aplayer.getId());
                                     ResultSet resultSet = statement.executeQuery();
                                     if (!resultSet.next()) continue;
                                     total += resultSet.getInt(statistic.getColumnName());
                                 }
                             }
-                            entries.add(new LeaderboardEntry<>(faction, total));
+                            entries.add(new LeaderboardEntry<>(island, total));
                         }
 
                         // Sort entries
@@ -63,12 +63,12 @@ public class FactionStatisticManager extends StatisticManager<Faction>
                                 .sorted((first, last) -> Integer.compare(last.getValue(), first.getValue()))
                                 .collect(Collectors.toList());
 
-                        FactionStatisticManager.this.entries.put(statistic, entries);
+                        IslandStatisticManager.this.entries.put(statistic, entries);
                     }
                 }
                 catch (SQLException e)
                 {
-                    plugin.getLogger().log(Level.SEVERE, "Failed to update cache (faction): " + e.getMessage());
+                    plugin.getLogger().log(Level.SEVERE, "Failed to update cache (island): " + e.getMessage());
                 }
             }
         }.runTaskTimerAsynchronously(plugin, 0L, plugin.getConfig().getLong("update-frequency") * 20L);
@@ -82,16 +82,16 @@ public class FactionStatisticManager extends StatisticManager<Faction>
             for (int i = 0; i < plugin.getConfig().getInt("placeholder.limit"); i++)
             {
                 int finalIndex = i;
-                this.register(plugin.getConfig().getString("placeholder.faction.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
+                this.register(plugin.getConfig().getString("placeholder.island.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
                     try
                     {
-                        LeaderboardEntry<Faction> entry = entries.get(statistic).get(finalIndex);
-                        Faction faction = entry.getRepresented();
-                        if (faction == null) return plugin.getConfig().getString("placeholder.faction.bad-faction");
+                        LeaderboardEntry<Island> entry = entries.get(statistic).get(finalIndex);
+                        Island island = entry.getRepresented();
+                        if (island == null) return plugin.getConfig().getString("placeholder.island.bad-island");
 
-                        return Color.color(plugin.getConfig().getString("placeholder.faction.format")
+                        return Color.color(plugin.getConfig().getString("placeholder.island.format")
                                 .replace("%index%", String.format("%,d", finalIndex + 1))
-                                .replace("%faction%", faction.getName())
+                                .replace("%island%", island.getName())
                                 .replace("%value%", statistic.getFormattedValue().apply(entry.getValue())));
                     }
                     catch (IndexOutOfBoundsException e)

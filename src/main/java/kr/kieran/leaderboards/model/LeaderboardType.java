@@ -3,9 +3,9 @@ package kr.kieran.leaderboards.model;
 public enum LeaderboardType
 {
 
-    OWN_FACTION(""),
+    OWN_ISLAND(""),
     ALL_PLAYERS(""),
-    ALL_FACTIONS("Factions"),
+    ALL_ISLANDS("Islands"),
 
     ;
 
