@@ -21,6 +21,7 @@ public class ProfileManager
 {
 
     private final LeaderboardsPlugin plugin;
+    public static final String UPDATE_STATEMENT = "UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`player_deaths` = ?, `leaderboards_players`.`player_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_placed` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`spawners_placed` = ?, `leaderboards_players`.`event_wins` = ? WHERE `leaderboards_players`.`unique_id` = ?;";
 
     private final Map<UUID, Profile> profiles = new HashMap<>();
     public Collection<Profile> getProfiles() { return this.profiles.values(); }
@@ -34,24 +35,27 @@ public class ProfileManager
     public void remove(UUID uniqueId) { this.profiles.remove(uniqueId); }
     public Profile get(UUID uniqueId) { return this.profiles.get(uniqueId); }
 
-    public void save(Connection connection, Player player, Profile profile) throws SQLException
+    public void setParameters(PreparedStatement statement, Profile profile, Player player) throws SQLException
     {
         Optional<Account> account = Infamous.getInstance().getAccountController().find(player.getUniqueId());
-        try (
-                PreparedStatement statement = connection.prepareStatement("UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`player_deaths` = ?, `leaderboards_players`.`player_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_placed` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`spawners_placed` = ?, `leaderboards_players`.`event_wins` = ? WHERE `leaderboards_players`.`unique_id` = ?;")
-        )
+        statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
+        statement.setLong(2, profile.getTimePlayed());
+        statement.setInt(3, profile.getMobKills());
+        statement.setInt(4, profile.getDeaths());
+        statement.setInt(5, profile.getPlayerKills());
+        statement.setInt(6, profile.getBlocksBroken());
+        statement.setInt(7, profile.getBlocksPlaced());
+        statement.setInt(8, player.getStatistic(Statistic.WALK_ONE_CM));
+        statement.setInt(9, profile.getSpawnersPlaced());
+        statement.setInt(10, account.map(Account::getWins).orElse(0));
+        statement.setString(11, profile.getUniqueId().toString());
+    }
+
+    public void save(Connection connection, Player player, Profile profile) throws SQLException
+    {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_STATEMENT))
         {
-            statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
-            statement.setLong(2, profile.getTimePlayed());
-            statement.setInt(3, profile.getMobKills());
-            statement.setInt(4, profile.getDeaths());
-            statement.setInt(5, profile.getPlayerKills());
-            statement.setInt(6, profile.getBlocksBroken());
-            statement.setInt(7, profile.getBlocksPlaced());
-            statement.setInt(8, player.getStatistic(Statistic.WALK_ONE_CM));
-            statement.setInt(9, profile.getSpawnersPlaced());
-            statement.setInt(10, account.map(Account::getWins).orElse(0));
-            statement.setString(11, profile.getUniqueId().toString());
+            this.setParameters(statement, profile, player);
             statement.executeUpdate();
         }
         catch (SQLException e)

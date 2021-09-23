@@ -1,11 +1,13 @@
 package kr.kieran.leaderboards.task;
 
 import kr.kieran.leaderboards.LeaderboardsPlugin;
+import kr.kieran.leaderboards.manager.ProfileManager;
 import kr.kieran.leaderboards.model.Profile;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
@@ -22,14 +24,22 @@ public class ProfileSaveTask extends BukkitRunnable
     @Override
     public void run()
     {
-        try (Connection connection = plugin.getDatabaseManager().getConnection())
+        try (
+                Connection connection = plugin.getDatabaseManager().getConnection();
+                PreparedStatement statement = connection.prepareStatement(ProfileManager.UPDATE_STATEMENT)
+        )
         {
+            // Add all profiles to a batch
             for (Profile profile : plugin.getProfileManager().getProfiles())
             {
                 Player player = plugin.getServer().getPlayer(profile.getUniqueId());
                 if (player == null) continue;
-                plugin.getProfileManager().save(connection, player, profile);
+                plugin.getProfileManager().setParameters(statement, profile, player);
+                statement.addBatch();
             }
+
+            // Execute
+            statement.executeBatch();
         }
         catch (SQLException e)
         {
