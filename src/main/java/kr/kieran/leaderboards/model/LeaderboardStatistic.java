@@ -20,13 +20,10 @@ public enum LeaderboardStatistic
     BLOCKS_BROKEN("Blocks Broken", "blocks_broken", LeaderboardStatistic::insertCommas),
     BLOCKS_PLACED("Blocks Placed", "blocks_placed", LeaderboardStatistic::insertCommas),
     BLOCKS_TRAVELLED("Blocks Travelled", "blocks_travelled", value -> { return insertCommas(value / 100); }),
-    CANE_BROKEN("Sugar Cane Broken", "cane_broken", LeaderboardStatistic::insertCommas),
     SPAWNERS_PLACED("Mob Spawners Placed", "spawners_placed", LeaderboardStatistic::insertCommas),
 
     // EVENT STATISTICS
     EVENT_WINS("Event Wins", "event_wins", LeaderboardStatistic::insertCommas),
-    ENVOY_CLAIMS("Envoys Claimed", "envoy_claims", LeaderboardStatistic::insertCommas),
-    KOTH_WINS("KoTH Wins", "koth_wins", LeaderboardStatistic::insertCommas),
 
     ;
 

@@ -41,12 +41,8 @@ public class Profile
     public int getSpawnersPlaced() { return spawnersPlaced; }
     public void setSpawnersPlaced(int spawnersPlaced) { this.spawnersPlaced = spawnersPlaced; }
 
-    private int envoyClaims;
-    public int getEnvoyClaims() { return envoyClaims; }
-    public void setEnvoyClaims(int envoyClaims) { this.envoyClaims = envoyClaims; }
-
-    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0, 0); }
-    public Profile(UUID uniqueId, long timePlayed, int mobKills, int deaths, int playerKills, int blocksBroken, int blocksPlaced, int spawnersPlaced, int envoyClaims)
+    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0); }
+    public Profile(UUID uniqueId, long timePlayed, int mobKills, int deaths, int playerKills, int blocksBroken, int blocksPlaced, int spawnersPlaced)
     {
         this.uniqueId = uniqueId;
         this.timePlayed = timePlayed;
@@ -56,7 +52,6 @@ public class Profile
         this.blocksBroken = blocksBroken;
         this.blocksPlaced = blocksPlaced;
         this.spawnersPlaced = spawnersPlaced;
-        this.envoyClaims = envoyClaims;
     }
 
 }

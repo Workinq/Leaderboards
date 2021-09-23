@@ -2,7 +2,6 @@ package kr.kieran.leaderboards.listener;
 
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.Profile;
-import me.Infamous.Envoy.events.SupplyCrateOpenEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
@@ -78,14 +77,6 @@ public class ProfileStatisticListener implements Listener
 
         // Increment
         profile.setDeaths(profile.getDeaths() + 1);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void envoy(SupplyCrateOpenEvent event)
-    {
-        Profile profile = plugin.getProfileManager().get(event.getPlayer().getUniqueId());
-        if (profile == null) return;
-        profile.setEnvoyClaims(profile.getEnvoyClaims() + 1);
     }
 
 }

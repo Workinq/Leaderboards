@@ -163,13 +163,6 @@ guis:
         lore: []
         slot: 14
         action: BLOCKS_TRAVELLED
-      cane-broken:
-        material: SUGAR_CANE
-        data: 0
-        name: '&aSugar Cane Broken'
-        lore: []
-        slot: 16
-        action: CANE_BROKEN
       spawners-placed:
         material: MOB_SPAWNER
         data: 0
@@ -188,20 +181,6 @@ guis:
         lore: []
         slot: 11
         action: EVENT_WINS
-      envoy-claims:
-        material: CHEST
-        data: 0
-        name: '&aEnvoys Claimed'
-        lore: []
-        slot: 13
-        action: ENVOY_CLAIMS
-      koth-wins:
-        material: DIAMOND_SWORD
-        data: 0
-        name: '&cKoTH Wins'
-        lore: []
-        slot: 15
-        action: KOTH_WINS
   leaderboard:
     name: '&aTop 9 %stat% %type%'
     rows: 5

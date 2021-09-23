@@ -4,10 +4,8 @@ import com.infamous.infamousevents.Infamous;
 import com.infamous.infamousevents.data.Account;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.Profile;
-import me.jordan.canetop.canetop;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
-import org.jdgames.koth.entity.MPlayer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +38,7 @@ public class ProfileManager
     {
         Optional<Account> account = Infamous.getInstance().getAccountController().find(player.getUniqueId());
         try (
-                PreparedStatement statement = connection.prepareStatement("UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`player_deaths` = ?, `leaderboards_players`.`player_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_placed` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`cane_broken` = ?, `leaderboards_players`.`spawners_placed` = ?, `leaderboards_players`.`event_wins` = ?, `leaderboards_players`.`envoy_claims` = ?, `leaderboards_players`.`koth_wins` = ? WHERE `leaderboards_players`.`unique_id` = ?;")
+                PreparedStatement statement = connection.prepareStatement("UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`player_deaths` = ?, `leaderboards_players`.`player_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_placed` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`spawners_placed` = ?, `leaderboards_players`.`event_wins` = ? WHERE `leaderboards_players`.`unique_id` = ?;")
         )
         {
             statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
@@ -51,12 +49,9 @@ public class ProfileManager
             statement.setInt(6, profile.getBlocksBroken());
             statement.setInt(7, profile.getBlocksPlaced());
             statement.setInt(8, player.getStatistic(Statistic.WALK_ONE_CM));
-            statement.setInt(9, new canetop().getScore(profile.getUniqueId()));
-            statement.setInt(10, profile.getSpawnersPlaced());
-            statement.setInt(11, account.map(Account::getWins).orElse(0));
-            statement.setInt(12, profile.getEnvoyClaims());
-            statement.setInt(13, MPlayer.get(player).getKothWins());
-            statement.setString(14, profile.getUniqueId().toString());
+            statement.setInt(9, profile.getSpawnersPlaced());
+            statement.setInt(10, account.map(Account::getWins).orElse(0));
+            statement.setString(11, profile.getUniqueId().toString());
             statement.executeUpdate();
         }
         catch (SQLException e)

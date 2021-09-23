@@ -126,27 +126,6 @@
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- CaneTop -->
-        <dependency>
-            <groupId>me.jordan.canetop</groupId>
-            <artifactId>PvPLabCaneTop</artifactId>
-            <version>1.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Envoys -->
-        <dependency>
-            <groupId>me.infamous.envoy</groupId>
-            <artifactId>PvPLabEnvoy</artifactId>
-            <version>1.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- KoTH -->
-        <dependency>
-            <groupId>org.jdgames.koth</groupId>
-            <artifactId>Koth</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- Events -->
         <dependency>
             <groupId>com.infamous</groupId>
