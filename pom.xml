@@ -15,7 +15,7 @@
     </properties>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.name}-Skyblock</finalName>
         <resources>
             <!-- Standard -->
             <resource>
