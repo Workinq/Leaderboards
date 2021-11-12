@@ -15,7 +15,7 @@
     </properties>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.name}-Factions</finalName>
         <resources>
             <!-- Standard -->
             <resource>
