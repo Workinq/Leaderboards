@@ -55,11 +55,12 @@ public class PlayerConnectionListener implements Listener
                         uniqueId,
                         resultSet.getLong("time_played"),
                         resultSet.getInt("mob_kills"),
-                        resultSet.getInt("player_deaths"),
-                        resultSet.getInt("player_kills"),
                         resultSet.getInt("blocks_broken"),
-                        resultSet.getInt("blocks_placed"),
-                        resultSet.getInt("spawners_placed")
+                        resultSet.getInt("ores_mined"),
+                        resultSet.getInt("wood_mined"),
+                        resultSet.getInt("crops_harvested"),
+                        resultSet.getInt("fish_caught"),
+                        resultSet.getInt("skill_xp")
                 );
             }
 

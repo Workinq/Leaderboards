@@ -21,37 +21,42 @@ public class Profile
     public int getMobKills() { return mobKills; }
     public void setMobKills(int mobKills) { this.mobKills = mobKills; }
 
-    private int deaths;
-    public int getDeaths() { return deaths; }
-    public void setDeaths(int deaths) { this.deaths = deaths; }
-
-    private int playerKills;
-    public int getPlayerKills() { return playerKills; }
-    public void setPlayerKills(int playerKills) { this.playerKills = playerKills; }
-
     private int blocksBroken;
     public int getBlocksBroken() { return blocksBroken; }
     public void setBlocksBroken(int blocksBroken) { this.blocksBroken = blocksBroken; }
 
-    private int blocksPlaced;
-    public int getBlocksPlaced() { return blocksPlaced; }
-    public void setBlocksPlaced(int blocksPlaced) { this.blocksPlaced = blocksPlaced; }
+    private int oresMined;
+    public int getOresMined() { return oresMined; }
+    public void setOresMined(int oresMined) { this.oresMined = oresMined; }
 
-    private int spawnersPlaced;
-    public int getSpawnersPlaced() { return spawnersPlaced; }
-    public void setSpawnersPlaced(int spawnersPlaced) { this.spawnersPlaced = spawnersPlaced; }
+    private int woodMined;
+    public int getWoodMined() { return woodMined; }
+    public void setWoodMined(int woodMined) { this.woodMined = woodMined; }
 
-    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0); }
-    public Profile(UUID uniqueId, long timePlayed, int mobKills, int deaths, int playerKills, int blocksBroken, int blocksPlaced, int spawnersPlaced)
+    private int cropsHarvested;
+    public int getCropsHarvested() { return cropsHarvested; }
+    public void setCropsHarvested(int cropsHarvested) { this.cropsHarvested = cropsHarvested; }
+
+    private int fishCaught;
+    public int getFishCaught() { return fishCaught; }
+    public void setFishCaught(int fishCaught) { this.fishCaught = fishCaught; }
+
+    private int skillXp;
+    public int getSkillXp() { return skillXp; }
+    public void setSkillXp(int skillXp) { this.skillXp = skillXp; }
+
+    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0, 0); }
+    public Profile(UUID uniqueId, long timePlayed, int mobKills, int blocksBroken, int oresMined, int woodMined, int cropsHarvested, int fishCaught, int skillXp)
     {
         this.uniqueId = uniqueId;
         this.timePlayed = timePlayed;
         this.mobKills = mobKills;
-        this.deaths = deaths;
-        this.playerKills = playerKills;
         this.blocksBroken = blocksBroken;
-        this.blocksPlaced = blocksPlaced;
-        this.spawnersPlaced = spawnersPlaced;
+        this.oresMined = oresMined;
+        this.woodMined = woodMined;
+        this.cropsHarvested = cropsHarvested;
+        this.fishCaught = fishCaught;
+        this.skillXp = skillXp;
     }
 
 }

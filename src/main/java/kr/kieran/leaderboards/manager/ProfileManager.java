@@ -1,7 +1,5 @@
 package kr.kieran.leaderboards.manager;
 
-import com.infamous.infamousevents.Infamous;
-import com.infamous.infamousevents.data.Account;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.Profile;
 import org.bukkit.Statistic;
@@ -13,7 +11,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -21,7 +18,7 @@ public class ProfileManager
 {
 
     private final LeaderboardsPlugin plugin;
-    public static final String UPDATE_STATEMENT = "UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`player_deaths` = ?, `leaderboards_players`.`player_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_placed` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`spawners_placed` = ?, `leaderboards_players`.`event_wins` = ? WHERE `leaderboards_players`.`unique_id` = ?;";
+    public static final String UPDATE_STATEMENT = "UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`ores_mined` = ?, `leaderboards_players`.`wood_mined` = ?, `leaderboards_players`.`crops_harvested` = ?, `leaderboards_players`.`fish_caught` = ?, `leaderboards_players`.`skill_xp` = ? WHERE `leaderboards_players`.`unique_id` = ?;";
 
     private final Map<UUID, Profile> profiles = new HashMap<>();
     public Collection<Profile> getProfiles() { return this.profiles.values(); }
@@ -37,17 +34,16 @@ public class ProfileManager
 
     public void setParameters(PreparedStatement statement, Profile profile, Player player) throws SQLException
     {
-        Optional<Account> account = Infamous.getInstance().getAccountController().find(player.getUniqueId());
         statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
         statement.setLong(2, profile.getTimePlayed());
         statement.setInt(3, profile.getMobKills());
-        statement.setInt(4, profile.getDeaths());
-        statement.setInt(5, profile.getPlayerKills());
-        statement.setInt(6, profile.getBlocksBroken());
-        statement.setInt(7, profile.getBlocksPlaced());
-        statement.setInt(8, player.getStatistic(Statistic.WALK_ONE_CM));
-        statement.setInt(9, profile.getSpawnersPlaced());
-        statement.setInt(10, account.map(Account::getWins).orElse(0));
+        statement.setInt(4, profile.getBlocksBroken());
+        statement.setInt(5, player.getStatistic(Statistic.WALK_ONE_CM));
+        statement.setInt(6, profile.getOresMined());
+        statement.setInt(7, profile.getWoodMined());
+        statement.setInt(8, profile.getCropsHarvested());
+        statement.setInt(9, profile.getFishCaught());
+        statement.setInt(10, profile.getSkillXp());
         statement.setString(11, profile.getUniqueId().toString());
     }
 

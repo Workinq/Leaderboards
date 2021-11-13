@@ -126,13 +126,6 @@
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- Events -->
-        <dependency>
-            <groupId>com.infamous</groupId>
-            <artifactId>infamous-events</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- HolographicDisplays -->
         <dependency>
             <groupId>com.gmail.filoghost.holographicdisplays</groupId>
@@ -152,7 +145,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.25</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <!-- Hikari -->
         <dependency>

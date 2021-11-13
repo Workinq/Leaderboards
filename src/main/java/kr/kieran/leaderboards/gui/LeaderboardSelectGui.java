@@ -4,7 +4,6 @@ import dev.triumphteam.gui.components.GuiAction;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.gui.leaderboard.BlockGui;
 import kr.kieran.leaderboards.gui.leaderboard.CombatGui;
-import kr.kieran.leaderboards.gui.leaderboard.EventGui;
 import kr.kieran.leaderboards.gui.leaderboard.TimeGui;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
 import kr.kieran.leaderboards.model.LeaderboardType;
@@ -35,14 +34,13 @@ public class LeaderboardSelectGui extends PopulateGui
             case TIME: return event -> new TimeGui(plugin, type, player).open(player, this);
             case COMBAT: return event -> new CombatGui(plugin, type, player).open(player, this);
             case BLOCK: return event -> new BlockGui(plugin, type, player).open(player, this);
-            case EVENT: return event -> new EventGui(plugin, type, player).open(player, this);
         }
         return null;
     }
 
     private enum Action
     {
-        TIME, COMBAT, BLOCK, EVENT
+        TIME, COMBAT, BLOCK
     }
 
 }

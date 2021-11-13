@@ -83,15 +83,15 @@ guis:
           - '&7for Block statistics'
         slot: 14
         action: BLOCK
-      event-stats:
-        material: NETHER_STAR
+      other-stats:
+        material: BEACON
         data: 0
-        name: '&b&lEvent Statistics'
+        name: '&d&lOther Statistics'
         lore:
           - '&7Click here to view the Leaderboards'
-          - '&7for Event statistics'
+          - '&7for Other statistics'
         slot: 16
-        action: EVENT
+        action: OTHER
   # GUI options for the time leaderboard
   lb-time:
     name: '&aTime Leaderboards'
@@ -123,20 +123,6 @@ guis:
         lore: []
         slot: 11
         action: MOB_KILLS
-      player-deaths:
-        material: DIAMOND_HELMET
-        data: 0
-        name: '&3Player Deaths'
-        lore: []
-        slot: 13
-        action: PLAYER_DEATHS
-      player-kills:
-        material: DIAMOND_SWORD
-        data: 0
-        name: '&cPlayer Kills'
-        lore: []
-        slot: 15
-        action: PLAYER_KILLS
   # GUI options for the blocks leaderboard
   lb-block:
     name: '&aBlock Leaderboards'
@@ -149,38 +135,32 @@ guis:
         lore: []
         slot: 10
         action: BLOCKS_BROKEN
-      blocks-placed:
-        material: OBSIDIAN
-        data: 0
-        name: '&dBlocks Placed'
-        lore: []
-        slot: 12
-        action: BLOCKS_PLACED
       blocks-travelled:
         material: DIAMOND_BOOTS
         data: 0
-        name: '&bBlocks Travelled'
+        name: '&aBlocks Travelled'
+        lore: []
+        slot: 12
+        action: BLOCKS_TRAVELLED
+      ores-mined:
+        material: DIAMOND_ORE
+        data: 0
+        name: '&bOres Mined'
         lore: []
         slot: 14
-        action: BLOCKS_TRAVELLED
-      spawners-placed:
-        material: MOB_SPAWNER
+        action: ORES_MINED
+      wood-mined:
+        material: LOG
         data: 0
-        name: '&5Mob Spawners Placed'
+        name: '&6Wood Mined'
         lore: []
-        slot: 22
-        action: SPAWNERS_PLACED
-  lb-event:
-    name: '&aEvent Leaderboards'
+        slot: 16
+        action: WOOD_MINED
+  lb-other:
+    name: '&aOther Leaderboards'
     rows: 3
     items:
-      event-wins:
-        material: DIAMOND_HELMET
-        data: 0
-        name: '&bEvent Wins'
-        lore: []
-        slot: 11
-        action: EVENT_WINS
+
   leaderboard:
     name: '&aTop 9 %stat% %type%'
     rows: 5

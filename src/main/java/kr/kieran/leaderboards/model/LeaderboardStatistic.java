@@ -13,18 +13,21 @@ public enum LeaderboardStatistic
 
     // COMBAT STATISTICS
     MOB_KILLS("Mobs Kills", "mob_kills", LeaderboardStatistic::insertCommas),
-    PLAYER_DEATHS("Player Deaths", "player_deaths", LeaderboardStatistic::insertCommas),
-    PLAYER_KILLS("Player Kills", "player_kills", LeaderboardStatistic::insertCommas),
 
     // BLOCK STATISTICS
     BLOCKS_BROKEN("Blocks Broken", "blocks_broken", LeaderboardStatistic::insertCommas),
-    BLOCKS_PLACED("Blocks Placed", "blocks_placed", LeaderboardStatistic::insertCommas),
     BLOCKS_TRAVELLED("Blocks Travelled", "blocks_travelled", value -> { return insertCommas(value / 100); }),
-    SPAWNERS_PLACED("Mob Spawners Placed", "spawners_placed", LeaderboardStatistic::insertCommas),
+    ORES_MINED("Ores Mined", "ores_mined", LeaderboardStatistic::insertCommas),
+    WOOD_MINED("Wood Mined", "wood_mined", LeaderboardStatistic::insertCommas),
 
-    // EVENT STATISTICS
-    EVENT_WINS("Event Wins", "event_wins", LeaderboardStatistic::insertCommas),
+    // FARMING STATISTICS
+    CROPS_HARVESTED("Crops Harvested", "crops_harvested", LeaderboardStatistic::insertCommas),
+    FISH_CAUGHT("Fish Caught", "fish_caught", LeaderboardStatistic::insertCommas),
 
+    // OTHER STATISTICS
+    SKILL_XP("Total Skill XP", "skill_xp", LeaderboardStatistic::insertCommas),
+
+    // End of list
     ;
 
     private final String niceName;
