@@ -39,38 +39,16 @@ public abstract class StatisticGui extends PopulateGui
         LeaderboardStatistic statistic = LeaderboardStatistic.valueOf(actionRaw);
         switch (type)
         {
-            case ALL_PLAYERS:
-                return event -> new PlayerGui(plugin, statistic, type, player)
-                {
-                    @Override
-                    public List<LeaderboardEntry<OfflinePlayer>> getEntries()
-                    {
-                        return plugin.getPlayerManager().getEntriesBy(statistic);
-                    }
-                }.open(player, this);
-            case ALL_FACTIONS:
-                return event -> new FactionGui(plugin, statistic, type, player)
-                {
-                    @Override
-                    public List<LeaderboardEntry<Faction>> getEntries()
-                    {
-                        return plugin.getFactionManager().getEntriesBy(statistic);
-                    }
-                }.open(player, this);
+            case ALL_PLAYERS: return event -> new PlayerGui(plugin, statistic, type, player, plugin.getPlayerManager().getEntriesBy(statistic)).open(player, this);
+            case ALL_FACTIONS: return event -> new FactionGui(plugin, statistic, type, player, plugin.getFactionManager().getEntriesBy(statistic)).open(player, this);
             case OWN_FACTION:
                 Faction faction = MPlayer.get(player).getFaction();
-                return event -> new PlayerGui(plugin, statistic, type, player)
-                {
-                    @Override
-                    public List<LeaderboardEntry<OfflinePlayer>> getEntries()
-                    {
-                        return plugin.getPlayerManager()
-                                .getEntriesBy(statistic)
-                                .stream()
-                                .filter(entry -> MPlayer.get(entry.getRepresented().getUniqueId().toString()).getFaction() == faction)
-                                .collect(Collectors.toList());
-                    }
-                }.open(player, this);
+                List<LeaderboardEntry<OfflinePlayer>> entries = plugin.getPlayerManager()
+                        .getEntriesBy(statistic)
+                        .stream()
+                        .filter(entry -> MPlayer.get(entry.getRepresented().getUniqueId().toString()).getFaction() == faction)
+                        .collect(Collectors.toList());
+                return event -> new PlayerGui(plugin, statistic, type, player, entries).open(player, this);
         }
         return null;
     }

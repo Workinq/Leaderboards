@@ -16,12 +16,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
+public class PlayerGui extends LeaderboardGui<OfflinePlayer>
 {
 
-    public PlayerGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
+    public PlayerGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player, List<LeaderboardEntry<OfflinePlayer>> entries)
     {
-        super(plugin, statistic, type, player);
+        super(plugin, statistic, type, player, entries);
 
         // Populate
         this.populateGui();
@@ -31,7 +31,6 @@ public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
     public GuiItem getOwnItem()
     {
         // Args
-        List<LeaderboardEntry<OfflinePlayer>> entries = this.getEntries();
         IndexedLeaderboardEntry<OfflinePlayer> indexedEntry = null;
 
         // Check for a matching entry
@@ -42,7 +41,7 @@ public abstract class PlayerGui extends LeaderboardGui<OfflinePlayer>
             indexedEntry = new IndexedLeaderboardEntry<>(entry.getRepresented(), entry.getValue(), i + 1);
         }
 
-        // Return the item using the below method
+        // Return the item using the method below
         if (indexedEntry == null) return null;
         return this.getItemFrom(indexedEntry.getIndex(), indexedEntry, true);
     }

@@ -17,12 +17,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class FactionGui extends LeaderboardGui<Faction>
+public class FactionGui extends LeaderboardGui<Faction>
 {
 
-    public FactionGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
+    public FactionGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player, List<LeaderboardEntry<Faction>> entries)
     {
-        super(plugin, statistic, type, player);
+        super(plugin, statistic, type, player, entries);
 
         // Populate
         this.populateGui();
@@ -33,7 +33,6 @@ public abstract class FactionGui extends LeaderboardGui<Faction>
     {
         // Args
         Faction faction = MPlayer.get(player).getFaction();
-        List<LeaderboardEntry<Faction>> entries = this.getEntries();
         IndexedLeaderboardEntry<Faction> indexedEntry = null;
 
         // Check for a matching entry
