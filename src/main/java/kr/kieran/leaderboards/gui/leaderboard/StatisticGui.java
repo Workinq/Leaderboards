@@ -39,38 +39,16 @@ public abstract class StatisticGui extends PopulateGui
         LeaderboardStatistic statistic = LeaderboardStatistic.valueOf(actionRaw);
         switch (type)
         {
-            case ALL_PLAYERS:
-                return event -> new PlayerGui(plugin, statistic, type, player)
-                {
-                    @Override
-                    public List<LeaderboardEntry<OfflinePlayer>> getEntries()
-                    {
-                        return plugin.getPlayerManager().getEntriesBy(statistic);
-                    }
-                }.open(player, this);
-            case ALL_ISLANDS:
-                return event -> new IslandGui(plugin, statistic, type, player)
-                {
-                    @Override
-                    public List<LeaderboardEntry<Island>> getEntries()
-                    {
-                        return plugin.getIslandManager().getEntriesBy(statistic);
-                    }
-                }.open(player, this);
+            case ALL_PLAYERS: return event -> new PlayerGui(plugin, statistic, type, player, plugin.getPlayerManager().getEntriesBy(statistic)).open(player, this);
+            case ALL_ISLANDS: return event -> new IslandGui(plugin, statistic, type, player, plugin.getIslandManager().getEntriesBy(statistic)).open(player, this);
             case OWN_ISLAND:
                 Island island = APlayer.get(player).getIsland();
-                return event -> new PlayerGui(plugin, statistic, type, player)
-                {
-                    @Override
-                    public List<LeaderboardEntry<OfflinePlayer>> getEntries()
-                    {
-                        return plugin.getPlayerManager()
-                                .getEntriesBy(statistic)
-                                .stream()
-                                .filter(entry -> APlayer.get(entry.getRepresented().getUniqueId().toString()).getIsland() == island)
-                                .collect(Collectors.toList());
-                    }
-                }.open(player, this);
+                List<LeaderboardEntry<OfflinePlayer>> entries = plugin.getPlayerManager()
+                        .getEntriesBy(statistic)
+                        .stream()
+                        .filter(entry -> APlayer.get(entry.getRepresented().getUniqueId().toString()).getIsland() == island)
+                        .collect(Collectors.toList());
+                return event -> new PlayerGui(plugin, statistic, type, player, entries).open(player, this);
         }
         return null;
     }

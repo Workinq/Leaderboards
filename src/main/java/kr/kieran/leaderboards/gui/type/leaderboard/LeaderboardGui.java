@@ -22,19 +22,20 @@ public abstract class LeaderboardGui<T> extends CacheGui
     private static final int[] SLOTS = new int[]{14, 22, 23, 24, 30, 31, 32, 33, 34, 35};
 
     protected final LeaderboardStatistic statistic;
+    protected final List<LeaderboardEntry<T>> entries;
 
-    public LeaderboardGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
+    public LeaderboardGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player, List<LeaderboardEntry<T>> entries)
     {
         super(plugin, plugin.getConfig().getInt("guis.leaderboard.rows"), Color.color(plugin.getConfig().getString("guis.leaderboard.name").replace("%stat%", statistic.getNiceName()).replace("%type%", type.getName())), InteractionModifier.VALUES, player);
 
         // Assign
         this.statistic = statistic;
+        this.entries = entries;
     }
 
     protected void populateGui()
     {
         // Get a list of entries but trim the list to 9 as that's all that can fit
-        List<LeaderboardEntry<T>> entries = this.getEntries();
         for (int i = 0; i < Math.min(9, entries.size()); i++)
         {
             LeaderboardEntry<T> entry = entries.get(i);
@@ -51,6 +52,5 @@ public abstract class LeaderboardGui<T> extends CacheGui
 
     public abstract GuiItem getOwnItem();
     public abstract GuiItem getItemFrom(int index, LeaderboardEntry<T> entry, boolean own);
-    public abstract List<LeaderboardEntry<T>> getEntries();
 
 }
