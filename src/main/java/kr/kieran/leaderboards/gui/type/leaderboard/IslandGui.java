@@ -17,12 +17,12 @@ import org.stellardev.galacticskyblock.entity.Island;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class IslandGui extends LeaderboardGui<Island>
+public class IslandGui extends LeaderboardGui<Island>
 {
 
-    public IslandGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player)
+    public IslandGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player, List<LeaderboardEntry<Island>> entries)
     {
-        super(plugin, statistic, type, player);
+        super(plugin, statistic, type, player, entries);
 
         // Populate
         this.populateGui();
@@ -33,7 +33,6 @@ public abstract class IslandGui extends LeaderboardGui<Island>
     {
         // Args
         Island island = APlayer.get(player).getIsland();
-        List<LeaderboardEntry<Island>> entries = this.getEntries();
         IndexedLeaderboardEntry<Island> indexedEntry = null;
 
         // Check for a matching entry
