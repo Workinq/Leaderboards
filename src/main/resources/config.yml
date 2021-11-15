@@ -65,15 +65,6 @@ guis:
           - '&7for Time statistics'
         slot: 10
         action: TIME
-      combat-stats:
-        material: DIAMOND_SWORD
-        data: 0
-        name: '&c&lCombat Statistics'
-        lore:
-          - '&7Click here to view the Leaderboards'
-          - '&7for Combat statistics'
-        slot: 12
-        action: COMBAT
       block-stats:
         material: BEDROCK
         data: 0
@@ -81,8 +72,17 @@ guis:
         lore:
           - '&7Click here to view the Leaderboards'
           - '&7for Block statistics'
-        slot: 14
+        slot: 12
         action: BLOCK
+      farming-stats:
+        material: SUGAR_CANE
+        data: 0
+        name: '&c&lFarming Statistics'
+        lore:
+          - '&7Click here to view the Leaderboards'
+          - '&7for Farming statistics'
+        slot: 14
+        action: FARMING
       other-stats:
         material: BEACON
         data: 0
@@ -111,22 +111,10 @@ guis:
         lore: []
         slot: 15
         action: TIME_PLAYED
-  # GUI options for the combat leaderboard
-  lb-combat:
-    name: '&aCombat Leaderboards'
-    rows: 3
-    items:
-      mob-kills:
-        material: SKULL_ITEM
-        data: 4
-        name: '&dMob Kills'
-        lore: []
-        slot: 11
-        action: MOB_KILLS
   # GUI options for the blocks leaderboard
   lb-block:
     name: '&aBlock Leaderboards'
-    rows: 4
+    rows: 3
     items:
       blocks-broken:
         material: DIAMOND_PICKAXE
@@ -156,11 +144,42 @@ guis:
         lore: []
         slot: 16
         action: WOOD_MINED
+  lb-farming:
+    name: '&aFarming Leaderboards'
+    rows: 3
+    items:
+      crops-harvested:
+        material: SEEDS
+        data: 0
+        name: '&aCrops Harvested'
+        lore: []
+        slot: 11
+        action: CROPS_HARVESTED
+      fish-caught:
+        material: RAW_FISH
+        data: 0
+        name: '&7Fish Caught'
+        lore: []
+        slot: 15
+        action: FISH_CAUGHT
   lb-other:
     name: '&aOther Leaderboards'
     rows: 3
     items:
-
+      skill-xp:
+        material: EXP_BOTTLE
+        data: 0
+        name: '&eTotal Skill XP'
+        lore: []
+        slot: 11
+        action: SKILL_XP
+      mob-kills:
+        material: SKULL_ITEM
+        data: 4
+        name: '&dMob Kills'
+        lore: []
+        slot: 15
+        action: MOB_KILLS
   leaderboard:
     name: '&aTop 9 %stat% %type%'
     rows: 5

@@ -3,7 +3,8 @@ package kr.kieran.leaderboards.gui;
 import dev.triumphteam.gui.components.GuiAction;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.gui.leaderboard.BlockGui;
-import kr.kieran.leaderboards.gui.leaderboard.CombatGui;
+import kr.kieran.leaderboards.gui.leaderboard.FarmingGui;
+import kr.kieran.leaderboards.gui.leaderboard.OtherGui;
 import kr.kieran.leaderboards.gui.leaderboard.TimeGui;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
 import kr.kieran.leaderboards.model.LeaderboardType;
@@ -32,15 +33,16 @@ public class LeaderboardSelectGui extends PopulateGui
         switch (action)
         {
             case TIME: return event -> new TimeGui(plugin, type, player).open(player, this);
-            case COMBAT: return event -> new CombatGui(plugin, type, player).open(player, this);
             case BLOCK: return event -> new BlockGui(plugin, type, player).open(player, this);
+            case FARMING: return event -> new FarmingGui(plugin, type, player).open(player, this);
+            case OTHER: return event -> new OtherGui(plugin, type, player).open(player, this);
         }
         return null;
     }
 
     private enum Action
     {
-        TIME, COMBAT, BLOCK
+        TIME, BLOCK, FARMING, OTHER
     }
 
 }
