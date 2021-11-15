@@ -2,12 +2,15 @@ package kr.kieran.leaderboards.manager;
 
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.Profile;
+import mc.ultimatecore.skills.HyperSkills;
+import mc.ultimatecore.skills.objects.SkillType;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +37,11 @@ public class ProfileManager
 
     public void setParameters(PreparedStatement statement, Profile profile, Player player) throws SQLException
     {
+        // Fetch the total XP from UltimateSKills plugin
+        UUID uniqueId = player.getUniqueId();
+        double totalXp = Arrays.stream(SkillType.values()).mapToDouble(skillType -> HyperSkills.getInstance().getApi().getXP(uniqueId, skillType)).sum();
+
+        // Set parameter values
         statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
         statement.setLong(2, profile.getTimePlayed());
         statement.setInt(3, profile.getMobKills());
@@ -43,7 +51,7 @@ public class ProfileManager
         statement.setInt(7, profile.getWoodMined());
         statement.setInt(8, profile.getCropsHarvested());
         statement.setInt(9, profile.getFishCaught());
-        statement.setInt(10, profile.getSkillXp());
+        statement.setDouble(10, totalXp);
         statement.setString(11, profile.getUniqueId().toString());
     }
 

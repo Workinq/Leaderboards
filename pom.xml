@@ -133,6 +133,20 @@
             <version>2.4.9</version>
             <scope>provided</scope>
         </dependency>
+        <!-- UltimateSkills -->
+        <dependency>
+            <groupId>mc.ultimatecore.skills</groupId>
+            <artifactId>HyperSkills</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- UltimateHelper -->
+        <dependency>
+            <groupId>mc.ultimatecore.helper</groupId>
+            <artifactId>UltimatePlugin</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- TaskChain -->
         <dependency>
             <groupId>co.aikar</groupId>
