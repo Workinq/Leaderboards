@@ -2,7 +2,7 @@ name: ${project.name}
 main: ${project.groupId}.${project.artifactId}
 version: ${project.version}
 author: ${project.author}
-#depend: [GalacticSkyblock, MassiveCore, HolographicDisplays]
+depend: [GalacticSkyBlock, MassiveCore, HolographicDisplays, UltimateCore-Skills]
 commands:
   leaderboards:
     usage: /<command>
