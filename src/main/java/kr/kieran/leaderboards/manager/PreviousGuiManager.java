@@ -29,6 +29,13 @@ public class PreviousGuiManager
         return stack.pop();
     }
 
+    public void remove(Player player)
+    {
+        if (!this.guiCache.containsKey(player)) return;
+        this.guiCache.get(player).clear();
+        this.guiCache.remove(player);
+    }
+
     public void disable()
     {
         Iterator<Map.Entry<Player, Stack<PopulateGui>>> iterator = this.guiCache.entrySet().iterator();

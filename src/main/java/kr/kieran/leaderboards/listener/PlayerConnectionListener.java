@@ -79,6 +79,8 @@ public class PlayerConnectionListener implements Listener
     public void quit(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
+        plugin.getGuiManager().remove(player);
+
         UUID uniqueId = player.getUniqueId();
         Profile profile = plugin.getProfileManager().get(uniqueId);
         if (profile == null) return;
