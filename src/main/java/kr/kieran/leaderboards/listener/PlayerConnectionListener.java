@@ -29,6 +29,7 @@ public class PlayerConnectionListener implements Listener
     @EventHandler
     public void login(AsyncPlayerPreLoginEvent event)
     {
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
         UUID uniqueId = event.getUniqueId();
         try (
                 Connection connection = plugin.getDatabaseManager().getConnection();
