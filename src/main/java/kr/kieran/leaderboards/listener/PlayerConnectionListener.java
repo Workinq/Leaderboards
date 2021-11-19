@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.sql.Connection;
@@ -27,51 +27,59 @@ public class PlayerConnectionListener implements Listener
     }
 
     @EventHandler
-    public void login(AsyncPlayerPreLoginEvent event)
+    public void login(PlayerLoginEvent event)
     {
-        UUID uniqueId = event.getUniqueId();
-        try (
-                Connection connection = plugin.getDatabaseManager().getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`player_deaths`, `leaderboards_players`.`player_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`blocks_placed`, `leaderboards_players`.`spawners_placed`, `leaderboards_players`.`envoy_claims` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
-        )
-        {
-            statement.setString(1, uniqueId.toString());
-            ResultSet resultSet = statement.executeQuery();
+        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) return;
+        Player player = event.getPlayer();
+        UUID uniqueId = player.getUniqueId();
 
-            Profile profile;
-            if (!resultSet.next())
-            {
-                // Create a new profile in the database as one didn't already exist
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);");
-                insertStatement.setString(1, uniqueId.toString());
-                insertStatement.executeUpdate();
+        plugin.newChain()
+                .async(() -> {
+                    try (
+                            Connection connection = plugin.getDatabaseManager().getConnection();
+                            PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`player_deaths`, `leaderboards_players`.`player_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`blocks_placed`, `leaderboards_players`.`spawners_placed`, `leaderboards_players`.`envoy_claims` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+                    )
+                    {
+                        statement.setString(1, uniqueId.toString());
+                        ResultSet resultSet = statement.executeQuery();
 
-                // Assign the profile object
-                profile = new Profile(uniqueId);
-            }
-            else
-            {
-                profile = new Profile(
-                        uniqueId,
-                        resultSet.getLong("time_played"),
-                        resultSet.getInt("mob_kills"),
-                        resultSet.getInt("player_deaths"),
-                        resultSet.getInt("player_kills"),
-                        resultSet.getInt("blocks_broken"),
-                        resultSet.getInt("blocks_placed"),
-                        resultSet.getInt("spawners_placed"),
-                        resultSet.getInt("envoy_claims")
-                );
-            }
+                        Profile profile;
+                        if (!resultSet.next())
+                        {
+                            // Create a new profile in the database as one didn't already exist
+                            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);");
+                            insertStatement.setString(1, uniqueId.toString());
+                            insertStatement.executeUpdate();
 
-            // Add the profile to registry
-            plugin.getProfileManager().add(uniqueId, profile);
-        }
-        catch (SQLException e)
-        {
-            plugin.getLogger().log(Level.SEVERE, "Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Failed to load your leaderboard profile.");
-        }
+                            // Assign the profile object
+                            profile = new Profile(uniqueId);
+                        }
+                        else
+                        {
+                            profile = new Profile(
+                                    uniqueId,
+                                    resultSet.getLong("time_played"),
+                                    resultSet.getInt("mob_kills"),
+                                    resultSet.getInt("player_deaths"),
+                                    resultSet.getInt("player_kills"),
+                                    resultSet.getInt("blocks_broken"),
+                                    resultSet.getInt("blocks_placed"),
+                                    resultSet.getInt("spawners_placed"),
+                                    resultSet.getInt("envoy_claims")
+                            );
+                        }
+
+                        // Add the profile to registry
+                        plugin.getProfileManager().add(uniqueId, profile);
+                        player.sendMessage(ChatColor.GREEN + "Your leaderboard profile was loaded successfully.");
+                    }
+                    catch (SQLException e)
+                    {
+                        plugin.getLogger().log(Level.SEVERE, "Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
+                        event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Failed to load your leaderboard profile.");
+                    }
+                })
+                .execute();
     }
 
     @EventHandler
