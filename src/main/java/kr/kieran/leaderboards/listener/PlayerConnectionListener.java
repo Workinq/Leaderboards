@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.sql.Connection;
@@ -27,51 +27,58 @@ public class PlayerConnectionListener implements Listener
     }
 
     @EventHandler
-    public void login(AsyncPlayerPreLoginEvent event)
+    public void login(PlayerLoginEvent event)
     {
-        UUID uniqueId = event.getUniqueId();
-        try (
-                Connection connection = plugin.getDatabaseManager().getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught`, `leaderboards_players`.`skill_xp` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
-        )
-        {
-            statement.setString(1, uniqueId.toString());
-            ResultSet resultSet = statement.executeQuery();
+        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED)  return;
+        Player player = event.getPlayer();
+        UUID uniqueId = player.getUniqueId();
 
-            Profile profile;
-            if (!resultSet.next())
-            {
-                // Create a new profile in the database as one didn't already exist
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);");
-                insertStatement.setString(1, uniqueId.toString());
-                insertStatement.executeUpdate();
+        plugin.newChain()
+                .async(() -> {
+                    try (
+                            Connection connection = plugin.getDatabaseManager().getConnection();
+                            PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught`, `leaderboards_players`.`skill_xp` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+                    )
+                    {
+                        statement.setString(1, uniqueId.toString());
+                        ResultSet resultSet = statement.executeQuery();
 
-                // Assign the profile object
-                profile = new Profile(uniqueId);
-            }
-            else
-            {
-                profile = new Profile(
-                        uniqueId,
-                        resultSet.getLong("time_played"),
-                        resultSet.getInt("mob_kills"),
-                        resultSet.getInt("blocks_broken"),
-                        resultSet.getInt("ores_mined"),
-                        resultSet.getInt("wood_mined"),
-                        resultSet.getInt("crops_harvested"),
-                        resultSet.getInt("fish_caught"),
-                        resultSet.getInt("skill_xp")
-                );
-            }
+                        Profile profile;
+                        if (!resultSet.next())
+                        {
+                            // Create a new profile in the database as one didn't already exist
+                            PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);");
+                            insertStatement.setString(1, uniqueId.toString());
+                            insertStatement.executeUpdate();
 
-            // Add the profile to registry
-            plugin.getProfileManager().add(uniqueId, profile);
-        }
-        catch (SQLException e)
-        {
-            plugin.getLogger().log(Level.SEVERE, "Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
-            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Failed to load your leaderboard profile.");
-        }
+                            // Assign the profile object
+                            profile = new Profile(uniqueId);
+                        }
+                        else
+                        {
+                            profile = new Profile(
+                                    uniqueId,
+                                    resultSet.getLong("time_played"),
+                                    resultSet.getInt("mob_kills"),
+                                    resultSet.getInt("blocks_broken"),
+                                    resultSet.getInt("ores_mined"),
+                                    resultSet.getInt("wood_mined"),
+                                    resultSet.getInt("crops_harvested"),
+                                    resultSet.getInt("fish_caught"),
+                                    resultSet.getInt("skill_xp")
+                            );
+                        }
+
+                        // Add the profile to registry
+                        plugin.getProfileManager().add(uniqueId, profile);
+                    }
+                    catch (SQLException e)
+                    {
+                        plugin.getLogger().log(Level.SEVERE, "Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
+                        event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + "Failed to load your leaderboard profile.");
+                    }
+                })
+                .execute();
     }
 
     @EventHandler
