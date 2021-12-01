@@ -6,7 +6,6 @@ import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +26,7 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
     }
 
     @Override
-    public BukkitTask getUpdateTask()
+    public BukkitRunnable getUpdateTask()
     {
         return new BukkitRunnable()
         {
@@ -59,7 +58,7 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                     plugin.getLogger().log(Level.SEVERE, "Failed to update cache (player): " + e.getMessage());
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, plugin.getConfig().getLong("update-frequency") * 20L);
+        };
     }
 
     @Override

@@ -5,7 +5,6 @@ import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.stellardev.galacticskyblock.coll.IslandColl;
 import org.stellardev.galacticskyblock.entity.APlayer;
 import org.stellardev.galacticskyblock.entity.Island;
@@ -28,7 +27,7 @@ public class IslandStatisticManager extends StatisticManager<Island>
     }
 
     @Override
-    public BukkitTask getUpdateTask()
+    public BukkitRunnable getUpdateTask()
     {
         return new BukkitRunnable()
         {
@@ -71,7 +70,7 @@ public class IslandStatisticManager extends StatisticManager<Island>
                     plugin.getLogger().log(Level.SEVERE, "Failed to update cache (island): " + e.getMessage());
                 }
             }
-        }.runTaskTimerAsynchronously(plugin, 0L, plugin.getConfig().getLong("update-frequency") * 20L);
+        };
     }
 
     @Override

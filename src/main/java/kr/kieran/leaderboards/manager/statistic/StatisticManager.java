@@ -5,9 +5,9 @@ import com.gmail.filoghost.holographicdisplays.api.placeholder.PlaceholderReplac
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +25,11 @@ public abstract class StatisticManager<T>
     public StatisticManager(LeaderboardsPlugin plugin)
     {
         this.plugin = plugin;
-        this.task = this.getUpdateTask();
+        this.task = this.getUpdateTask().runTaskTimerAsynchronously(plugin, 20L, plugin.getConfig().getLong("update-frequency") * 20L);
         this.registerPlaceholders();
     }
 
-    public abstract BukkitTask getUpdateTask();
+    public abstract BukkitRunnable getUpdateTask();
 
     // Hologram placeholders
     protected abstract void registerPlaceholders();
