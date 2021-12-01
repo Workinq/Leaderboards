@@ -6,9 +6,8 @@ import com.massivecraft.factions.entity.MPlayer;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
-import kr.kieran.leaderboards.task.CompletableTask;
 import kr.kieran.leaderboards.utility.Color;
-import kr.kieran.leaderboards.utility.EmptyCallable;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,9 +27,9 @@ public class FactionStatisticManager extends StatisticManager<Faction>
     }
 
     @Override
-    public CompletableTask getUpdateTask(EmptyCallable callable)
+    public BukkitRunnable getUpdateTask()
     {
-        return new CompletableTask(callable)
+        return new BukkitRunnable()
         {
             @Override
             public void run()
@@ -64,7 +63,6 @@ public class FactionStatisticManager extends StatisticManager<Faction>
                                 .collect(Collectors.toList());
 
                         FactionStatisticManager.this.entries.put(statistic, entries);
-                        this.complete();
                     }
                 }
                 catch (SQLException e)
