@@ -3,9 +3,8 @@ package kr.kieran.leaderboards.manager.statistic;
 import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
-import kr.kieran.leaderboards.task.CompletableTask;
 import kr.kieran.leaderboards.utility.Color;
-import kr.kieran.leaderboards.utility.EmptyCallable;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.stellardev.galacticskyblock.coll.IslandColl;
 import org.stellardev.galacticskyblock.entity.APlayer;
 import org.stellardev.galacticskyblock.entity.Island;
@@ -28,9 +27,9 @@ public class IslandStatisticManager extends StatisticManager<Island>
     }
 
     @Override
-    public CompletableTask getUpdateTask(EmptyCallable callable)
+    public BukkitRunnable getUpdateTask()
     {
-        return new CompletableTask(callable)
+        return new BukkitRunnable()
         {
             @Override
             public void run()
@@ -64,7 +63,6 @@ public class IslandStatisticManager extends StatisticManager<Island>
                                 .collect(Collectors.toList());
 
                         IslandStatisticManager.this.entries.put(statistic, entries);
-                        this.complete();
                     }
                 }
                 catch (SQLException e)
