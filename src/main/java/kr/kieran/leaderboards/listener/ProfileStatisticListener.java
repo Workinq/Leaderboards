@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Crops;
+import org.bukkit.material.MaterialData;
 
 public class ProfileStatisticListener implements Listener
 {
@@ -61,12 +62,9 @@ public class ProfileStatisticListener implements Listener
         Profile profile = plugin.getProfileManager().get(event.getPlayer().getUniqueId());
         if (profile == null) return;
 
-        // Check if block is a crop
-        if (block instanceof Crops)
+        // Check if block is a crop & is ripe
+        if (MaterialUtil.isCrop(block.getType()) && block.getData() == 7)
         {
-            Crops crop = (Crops) block;
-            if (crop.getState() != CropState.RIPE) return;
-
             // Increment
             profile.setCropsHarvested(profile.getCropsHarvested() + 1);
             return;
