@@ -41,7 +41,12 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                         try (PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`unique_id`, `leaderboards_players`.`" + statistic.getColumnName() + "` FROM `leaderboards_players` ORDER BY `leaderboards_players`.`" + statistic.getColumnName() + "`;"))
                         {
                             ResultSet resultSet = statement.executeQuery();
-                            while (resultSet.next()) entries.add(new LeaderboardEntry<>(plugin.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("unique_id"))), resultSet.getInt(statistic.getColumnName())));
+                            while (resultSet.next())
+                            {
+                                OfflinePlayer player = plugin.getServer().getOfflinePlayer(UUID.fromString(resultSet.getString("unique_id")));
+                                if (!player.hasPlayedBefore()) continue;
+                                entries.add(new LeaderboardEntry<>(player, resultSet.getInt(statistic.getColumnName())));
+                            }
                         }
 
                         // Sort entries
