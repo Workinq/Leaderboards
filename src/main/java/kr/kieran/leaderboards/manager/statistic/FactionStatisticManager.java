@@ -7,6 +7,7 @@ import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.model.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.utility.Color;
+import kr.kieran.leaderboards.utility.FactionUtil;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class FactionStatisticManager extends StatisticManager<Faction>
                         List<LeaderboardEntry<Faction>> entries = new LinkedList<>();
                         for (Faction faction : FactionColl.get().getAll())
                         {
-                            if (faction.isSystemFaction()) continue;
+                            if (FactionUtil.isSystemFaction(faction)) continue;
                             int total = 0;
                             for (MPlayer mplayer : faction.getMPlayers())
                             {
