@@ -13,4 +13,7 @@ public class MaterialUtil
     private static final EnumSet<Material> LOG_MATERIALS = EnumSet.of(Material.LOG, Material.LOG_2);
     public static boolean isLog(Material material) { return LOG_MATERIALS.contains(material); }
 
+    private static final EnumSet<Material> CROP_MATERIALS = EnumSet.of(Material.CROPS, Material.CARROT, Material.POTATO);
+    public static boolean isCrop(Material material) { return CROP_MATERIALS.contains(material); }
+
 }

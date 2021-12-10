@@ -24,31 +24,32 @@ public class TextureUpdateTask extends BukkitRunnable
     @Override
     public void run()
     {
-        try (
-                Connection connection = plugin.getDatabaseManager().getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE `leaderboards_skulls` SET `leaderboards_skulls`.`texture` = ? WHERE `leaderboards_skulls`.`unique_id` = ?;")
-        )
+        try (Connection connection = plugin.getDatabaseManager().getConnection())
         {
             // Loop over any data that needs to be updated
             for (Iterator<Map.Entry<UUID, String>> iterator = plugin.getTextureManager().getUpdates().entrySet().iterator(); iterator.hasNext();)
             {
-                Map.Entry<UUID, String> entry = iterator.next();
+                try (PreparedStatement statement = connection.prepareStatement("UPDATE `leaderboards_skulls` SET `leaderboards_skulls`.`texture` = ? WHERE `leaderboards_skulls`.`unique_id` = ?;"))
+                {
+                    Map.Entry<UUID, String> entry = iterator.next();
 
-                // Set parameters
-                statement.setString(1, entry.getValue());
-                statement.setString(2, entry.getKey().toString());
+                    // Set parameters
+                    statement.setString(1, entry.getValue());
+                    statement.setString(2, entry.getKey().toString());
 
-                // Add to batch & remove entry
-                statement.addBatch();
-                iterator.remove();
+                    // Add to batch & remove entry
+                    statement.executeUpdate();
+                    iterator.remove();
+                }
+                catch (SQLException e)
+                {
+                    plugin.getLogger().log(Level.SEVERE, "Failed to update texture: " + e.getMessage());
+                }
             }
-
-            // Commit
-            statement.executeBatch();
         }
         catch (SQLException e)
         {
-            plugin.getLogger().log(Level.SEVERE, "Failed to update skull textures: " + e.getMessage());
+            plugin.getLogger().log(Level.SEVERE, "Failed to open database connection (textures): " + e.getMessage());
         }
     }
 

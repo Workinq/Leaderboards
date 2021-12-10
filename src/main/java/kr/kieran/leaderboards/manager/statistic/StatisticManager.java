@@ -25,7 +25,7 @@ public abstract class StatisticManager<T>
     public StatisticManager(LeaderboardsPlugin plugin)
     {
         this.plugin = plugin;
-        this.task = this.getUpdateTask().runTaskTimerAsynchronously(plugin, 20L, plugin.getConfig().getLong("update-frequency") * 20L);
+        this.task = this.getUpdateTask().runTaskTimerAsynchronously(plugin, 20L, plugin.getConfig().getLong("tasks.update-frequency") * 20L);
         this.registerPlaceholders();
     }
 
