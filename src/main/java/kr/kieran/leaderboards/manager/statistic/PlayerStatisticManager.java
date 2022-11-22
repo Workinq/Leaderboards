@@ -77,9 +77,11 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                 this.register(plugin.getConfig().getString("placeholder.player.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
                     try
                     {
-                        LeaderboardEntry<OfflinePlayer> entry = this.entries.get(statistic).get(finalIndex);
+                        List<LeaderboardEntry<OfflinePlayer>> leaderboardEntries = entries.get(statistic);
+                        if (leaderboardEntries == null) return Color.color(plugin.getConfig().getString("placeholder.still-loading").replace("%index%", String.format("%,d", finalIndex + 1)));
+                        LeaderboardEntry<OfflinePlayer> entry = leaderboardEntries.get(finalIndex);
                         OfflinePlayer player = entry.getRepresented();
-                        if (player == null) return plugin.getConfig().getString("placeholder.player.bad-player");
+                        if (player == null) return Color.color(plugin.getConfig().getString("placeholder.player.bad-player"));
 
                         return Color.color(plugin.getConfig().getString("placeholder.player.format")
                                 .replace("%index%", String.format("%,d", finalIndex + 1))
@@ -88,7 +90,7 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds"));
+                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds").replace("%index%", String.format("%,d", finalIndex + 1)));
                     }
                 });
             }

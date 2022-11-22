@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS `leaderboards_players`
     `wood_mined` INT NOT NULL DEFAULT '0',
     `crops_harvested` INT NOT NULL DEFAULT '0',
     `fish_caught` INT NOT NULL DEFAULT '0',
-    `skill_xp` INT NOT NULL DEFAULT '0',
     CONSTRAINT `leaderboards_players_pk` PRIMARY KEY (`unique_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

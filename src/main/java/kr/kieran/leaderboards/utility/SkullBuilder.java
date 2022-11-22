@@ -31,7 +31,7 @@ public class SkullBuilder extends BaseItemBuilder<dev.triumphteam.gui.builder.it
         return new SkullBuilder(modified);
     }
 
-    public SkullBuilder setName(String name)
+    public SkullBuilder itemName(String name)
     {
         ItemMeta meta = this.getMeta();
         meta.setDisplayName(name);
@@ -39,7 +39,7 @@ public class SkullBuilder extends BaseItemBuilder<dev.triumphteam.gui.builder.it
         return this;
     }
 
-    public SkullBuilder setLore(List<String> lore)
+    public SkullBuilder itemLore(List<String> lore)
     {
         ItemMeta meta = this.getMeta();
         meta.setLore(lore);

@@ -24,6 +24,7 @@ public class LeaderboardMenuGui extends PopulateGui
     @Override
     protected GuiAction<InventoryClickEvent> getAction(String actionRaw)
     {
+        // TODO: Cache the guis so they aren't created every time they're opened
         LeaderboardType type = LeaderboardType.valueOf(actionRaw);
         switch (type)
         {

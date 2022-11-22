@@ -37,7 +37,7 @@ public class PlayerConnectionListener implements Listener
                 .async(() -> {
                     try (
                             Connection connection = plugin.getDatabaseManager().getConnection();
-                            PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught`, `leaderboards_players`.`skill_xp` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+                            PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
                     )
                     {
                         statement.setString(1, uniqueId.toString());
@@ -64,8 +64,7 @@ public class PlayerConnectionListener implements Listener
                                     resultSet.getInt("ores_mined"),
                                     resultSet.getInt("wood_mined"),
                                     resultSet.getInt("crops_harvested"),
-                                    resultSet.getInt("fish_caught"),
-                                    resultSet.getInt("skill_xp")
+                                    resultSet.getInt("fish_caught")
                             );
                         }
 

@@ -166,19 +166,12 @@ guis:
     name: '&aOther Leaderboards'
     rows: 3
     items:
-      skill-xp:
-        material: EXP_BOTTLE
-        data: 0
-        name: '&eTotal Skill XP'
-        lore: []
-        slot: 11
-        action: SKILL_XP
       mob-kills:
         material: SKULL_ITEM
         data: 4
         name: '&dMob Kills'
         lore: []
-        slot: 15
+        slot: 11
         action: MOB_KILLS
   leaderboard:
     name: '&aTop 9 %stat% %type%'
@@ -187,7 +180,8 @@ guis:
 
 placeholder:
   limit: 9
-  out-of-bounds: '&floading...'
+  out-of-bounds: '&3&l%index%. &r&floading...'
+  still-loading: '&3&l%index%. &r&floading...'
   island:
     entry: '{leaderboards_island_%statistic%_%index%}'
     bad-island: 'NaI'

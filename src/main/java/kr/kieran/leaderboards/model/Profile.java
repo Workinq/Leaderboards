@@ -45,8 +45,8 @@ public class Profile
     public int getSkillXp() { return skillXp; }
     public void setSkillXp(int skillXp) { this.skillXp = skillXp; }
 
-    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0, 0); }
-    public Profile(UUID uniqueId, long timePlayed, int mobKills, int blocksBroken, int oresMined, int woodMined, int cropsHarvested, int fishCaught, int skillXp)
+    public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0); }
+    public Profile(UUID uniqueId, long timePlayed, int mobKills, int blocksBroken, int oresMined, int woodMined, int cropsHarvested, int fishCaught)
     {
         this.uniqueId = uniqueId;
         this.timePlayed = timePlayed;

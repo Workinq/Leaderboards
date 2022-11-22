@@ -29,6 +29,8 @@ public abstract class StatisticManager<T>
         this.registerPlaceholders();
     }
 
+    // TODO: Add an item saying there are no players to show in the leaderboard if it's empty
+    // TODO: Make the hologram task wait for the entries to be loaded into memory
     public abstract BukkitRunnable getUpdateTask();
 
     // Hologram placeholders

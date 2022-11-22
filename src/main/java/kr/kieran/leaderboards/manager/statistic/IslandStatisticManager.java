@@ -84,9 +84,11 @@ public class IslandStatisticManager extends StatisticManager<Island>
                 this.register(plugin.getConfig().getString("placeholder.island.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
                     try
                     {
-                        LeaderboardEntry<Island> entry = entries.get(statistic).get(finalIndex);
+                        List<LeaderboardEntry<Island>> leaderboardEntries = entries.get(statistic);
+                        if (leaderboardEntries == null) return Color.color(plugin.getConfig().getString("placeholder.still-loading").replace("%index%", String.format("%,d", finalIndex + 1)));
+                        LeaderboardEntry<Island> entry = leaderboardEntries.get(finalIndex);
                         Island island = entry.getRepresented();
-                        if (island == null) return plugin.getConfig().getString("placeholder.island.bad-island");
+                        if (island == null) return Color.color(plugin.getConfig().getString("placeholder.island.bad-island"));
 
                         return Color.color(plugin.getConfig().getString("placeholder.island.format")
                                 .replace("%index%", String.format("%,d", finalIndex + 1))
@@ -95,7 +97,7 @@ public class IslandStatisticManager extends StatisticManager<Island>
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds"));
+                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds").replace("%index%", String.format("%,d", finalIndex + 1)));
                     }
                 });
             }

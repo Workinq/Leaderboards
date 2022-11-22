@@ -1,6 +1,6 @@
 package kr.kieran.leaderboards.gui.type;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.builder.item .ItemBuilder;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.components.InteractionModifier;
 import kr.kieran.leaderboards.LeaderboardsPlugin;

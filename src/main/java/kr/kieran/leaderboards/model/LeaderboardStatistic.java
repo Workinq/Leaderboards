@@ -24,9 +24,6 @@ public enum LeaderboardStatistic
     CROPS_HARVESTED("Crops Harvested", "crops_harvested", LeaderboardStatistic::insertCommas),
     FISH_CAUGHT("Fish Caught", "fish_caught", LeaderboardStatistic::insertCommas),
 
-    // OTHER STATISTICS
-    SKILL_XP("Total Skill XP", "skill_xp", LeaderboardStatistic::insertCommas),
-
     // End of list
     ;
 

@@ -109,7 +109,7 @@
         <dependency>
             <groupId>dev.triumphteam</groupId>
             <artifactId>triumph-gui</artifactId>
-            <version>3.0.3</version>
+            <version>3.1.3-COLLFIX</version>
             <scope>compile</scope>
         </dependency>
         <!-- MassiveCore -->
@@ -133,20 +133,7 @@
             <version>2.4.9</version>
             <scope>provided</scope>
         </dependency>
-        <!-- UltimateSkills -->
-        <dependency>
-            <groupId>mc.ultimatecore.skills</groupId>
-            <artifactId>HyperSkills</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- UltimateHelper -->
-        <dependency>
-            <groupId>mc.ultimatecore.helper</groupId>
-            <artifactId>UltimatePlugin</artifactId>
-            <version>1.0</version>
-            <scope>provided</scope>
-        </dependency>
+
         <!-- TaskChain -->
         <dependency>
             <groupId>co.aikar</groupId>
