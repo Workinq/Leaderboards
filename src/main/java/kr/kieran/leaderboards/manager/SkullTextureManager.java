@@ -23,8 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 
 public class SkullTextureManager
@@ -34,12 +32,7 @@ public class SkullTextureManager
 
     // Texture cache
     private final Map<UUID, String> textures = new HashMap<>();
-    public Map<UUID, String> getTextures() { return Collections.unmodifiableMap(this.textures); }
-
-    // Textures to be updated in database
-    private final ConcurrentMap<UUID, String> updates = new ConcurrentHashMap<>();
-    public synchronized Map<UUID, String> getUpdates() { return updates; }
-    public void update(UUID uniqueId, String texture) { this.updates.put(uniqueId, texture); }
+    public Map<UUID, String> getTextures() { return Collections.unmodifiableMap(textures); }
 
     public SkullTextureManager(LeaderboardsPlugin plugin)
     {
@@ -59,7 +52,7 @@ public class SkullTextureManager
                         ResultSet resultSet = statement.executeQuery();
                         while (resultSet.next())
                         {
-                            this.textures.put(
+                            textures.put(
                                     UUID.fromString(resultSet.getString("unique_id")),
                                     resultSet.getString("texture")
                             );
@@ -73,12 +66,8 @@ public class SkullTextureManager
                 .execute();
     }
 
-    public String get(UUID uniqueId) { return this.textures.get(uniqueId); }
-    public void add(UUID uniqueId, String texture)
-    {
-        this.textures.put(uniqueId, texture);
-        this.update(uniqueId, texture);
-    }
+    public String get(UUID uniqueId) { return textures.get(uniqueId); }
+    public void add(UUID uniqueId, String texture) { textures.put(uniqueId, texture); }
 
     public String getTextureFrom(Player player)
     {
@@ -91,7 +80,7 @@ public class SkullTextureManager
     {
         // Args
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
-        String texture = this.textures.getOrDefault(uuid, null);
+        String texture = textures.getOrDefault(uuid, null);
 
         // Get the skull texture for the specified player
         if (texture != null)
@@ -116,7 +105,7 @@ public class SkullTextureManager
         // Cache
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             String textureLine = this.getSkullTexture(head);
-            if (textureLine != null) this.textures.putIfAbsent(uuid, textureLine);
+            if (textureLine != null) textures.putIfAbsent(uuid, textureLine);
         }, 20L);
         return head;
     }
@@ -134,6 +123,6 @@ public class SkullTextureManager
         return (property == null) ? null : property.getValue();
     }
 
-    public void disable() { this.textures.clear(); }
+    public void disable() { textures.clear(); }
 
 }

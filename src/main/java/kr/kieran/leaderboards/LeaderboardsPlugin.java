@@ -15,7 +15,6 @@ import kr.kieran.leaderboards.manager.ProfileManager;
 import kr.kieran.leaderboards.manager.SkullTextureManager;
 import kr.kieran.leaderboards.task.ProfileSaveTask;
 import kr.kieran.leaderboards.task.ProfileTimePlayedTask;
-import kr.kieran.leaderboards.task.TextureUpdateTask;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -112,9 +111,8 @@ public class LeaderboardsPlugin extends JavaPlugin
 
     private void registerTasks()
     {
-        this.tasks.add(new ProfileSaveTask(this).runTaskTimerAsynchronously(this, this.getConfig().getInt("tasks.profile-update-frequency") * 20L, this.getConfig().getInt("tasks.profile-update-frequency") * 20L));
-        this.tasks.add(new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("tasks.time-check-frequency") * 20L));
-        this.tasks.add(new TextureUpdateTask(this).runTaskTimerAsynchronously(this, this.getConfig().getInt("tasks.texture-update-frequency") * 20L, this.getConfig().getInt("tasks.texture-update-frequency") * 20L));
+        tasks.add(new ProfileSaveTask(this).runTaskTimerAsynchronously(this, this.getConfig().getInt("tasks.profile-update-frequency") * 20L, this.getConfig().getInt("tasks.profile-update-frequency") * 20L));
+        tasks.add(new ProfileTimePlayedTask(this).runTaskTimer(this, 0L, this.getConfig().getInt("tasks.time-check-frequency") * 20L));
     }
 
 }

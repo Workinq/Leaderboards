@@ -26,14 +26,15 @@ public class TextureCacheListener implements Listener
     public void join(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();
+
         plugin.newChain()
                 .syncFirst(() -> plugin.getTextureManager().getTextureFrom(player))
                 .abortIfNull()
-                .storeAsData("texture")
+                .storeAsData("skin-texture")
                 .async(texture -> {
                     try (
                             Connection connection = plugin.getDatabaseManager().getConnection();
-                            PreparedStatement statement = connection.prepareStatement("INSERT IGNORE INTO `leaderboards_skulls` (`leaderboards_skulls`.`unique_id`, `leaderboards_skulls`.`texture`) VALUES (?, ?);")
+                            PreparedStatement statement = connection.prepareStatement("INSERT INTO `leaderboards_skulls` (`unique_id`, `texture`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `texture` = VALUES (`texture`);")
                     )
                     {
                         statement.setString(1, player.getUniqueId().toString());
