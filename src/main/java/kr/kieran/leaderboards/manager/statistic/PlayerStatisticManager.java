@@ -1,7 +1,7 @@
 package kr.kieran.leaderboards.manager.statistic;
 
 import kr.kieran.leaderboards.LeaderboardsPlugin;
-import kr.kieran.leaderboards.model.LeaderboardEntry;
+import kr.kieran.leaderboards.model.entry.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.OfflinePlayer;
@@ -22,7 +22,7 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
 
     public PlayerStatisticManager(LeaderboardsPlugin plugin)
     {
-        super(plugin);
+        super(plugin, OfflinePlayer.class);
     }
 
     @Override
