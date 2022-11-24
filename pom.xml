@@ -44,13 +44,41 @@
                         </transformer>
                     </transformers>
                     <relocations>
+                        <!-- Triumph GUI -->
                         <relocation>
                             <pattern>dev.triumphteam.gui</pattern>
-                            <shadedPattern>kr.kieran.leaderboards.shade.gui</shadedPattern>
+                            <shadedPattern>kr.kieran.shade.gui</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>kr.kieran.shade.kyori</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.intellij</pattern>
+                            <shadedPattern>kr.kieran.shade.intellij</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains</pattern>
+                            <shadedPattern>kr.kieran.shade.jetbrains</shadedPattern>
+                        </relocation>
+                        <!-- TaskChain -->
+                        <relocation>
                             <pattern>co.aikar.taskchain</pattern>
-                            <shadedPattern>kr.kieran.leaderboards.shade.taskchain</shadedPattern>
+                            <shadedPattern>kr.kieran.shade.taskchain</shadedPattern>
+                        </relocation>
+                        <!-- Hikari -->
+                        <relocation>
+                            <pattern>com.zaxxer.hikari</pattern>
+                            <shadedPattern>kr.kieran.shade.hikari</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.slf4j</pattern>
+                            <shadedPattern>kr.kieran.shade.slf4j</shadedPattern>
+                        </relocation>
+                        <!-- MySQL -->
+                        <relocation>
+                            <pattern>com.mysql</pattern>
+                            <shadedPattern>kr.kieran.shade.mysql</shadedPattern>
                         </relocation>
                     </relocations>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -68,10 +96,10 @@
     </build>
 
     <repositories>
-        <!-- Spigot -->
+        <!-- Paper -->
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <!-- TaskChain -->
         <repository>
@@ -91,10 +119,10 @@
     </repositories>
 
     <dependencies>
-        <!-- Spigot -->
+        <!-- Paper -->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>paperspigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -104,13 +132,6 @@
             <artifactId>craftbukkit</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- Triumph GUI -->
-        <dependency>
-            <groupId>dev.triumphteam</groupId>
-            <artifactId>triumph-gui</artifactId>
-            <version>3.1.3-COLLFIX</version>
-            <scope>compile</scope>
         </dependency>
         <!-- MassiveCore -->
         <dependency>
@@ -132,6 +153,13 @@
             <artifactId>holographicdisplays-api</artifactId>
             <version>2.4.9</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- Triumph GUI -->
+        <dependency>
+            <groupId>dev.triumphteam</groupId>
+            <artifactId>triumph-gui</artifactId>
+            <version>3.1.3-COLLFIX</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- TaskChain -->
