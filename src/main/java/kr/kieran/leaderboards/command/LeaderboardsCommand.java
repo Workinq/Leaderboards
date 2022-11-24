@@ -21,15 +21,21 @@ public class LeaderboardsCommand implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        // Check that whoever is executing the command is an actual player (can't open a gui for a console)
         if (!(sender instanceof Player))
         {
             sender.sendMessage(Color.color(plugin.getConfig().getString("messages.not-a-player")));
             return true;
         }
 
-        // Open the leaderboards menu gui
         Player player = (Player) sender;
+        // Check if the player's profile was loaded successfully at login
+        if (plugin.getProfileManager().get(player.getUniqueId()) == null)
+        {
+            player.sendMessage(Color.color(plugin.getConfig().getString("messages.profile-not-loaded")));
+            return true;
+        }
+
+        // Open the leaderboards menu gui
         LeaderboardMenuGui menuGui = new LeaderboardMenuGui(plugin, player);
         menuGui.open(player);
         return true;
