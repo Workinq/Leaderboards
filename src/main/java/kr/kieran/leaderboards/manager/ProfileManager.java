@@ -7,8 +7,10 @@ import org.bukkit.entity.Player;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -17,26 +19,84 @@ import java.util.logging.Level;
 public class ProfileManager
 {
 
-    private final LeaderboardsPlugin plugin;
+    // Constants
     public static final String UPDATE_STATEMENT = "UPDATE `leaderboards_players` SET `leaderboards_players`.`time_connected` = ?, `leaderboards_players`.`time_played` = ?, `leaderboards_players`.`mob_kills` = ?, `leaderboards_players`.`blocks_broken` = ?, `leaderboards_players`.`blocks_travelled` = ?, `leaderboards_players`.`ores_mined` = ?, `leaderboards_players`.`wood_mined` = ?, `leaderboards_players`.`crops_harvested` = ?, `leaderboards_players`.`fish_caught` = ? WHERE `leaderboards_players`.`unique_id` = ?;";
 
+    // DI
+    private final LeaderboardsPlugin plugin;
+
+    // Cache
     private final Map<UUID, Profile> profiles = new HashMap<>();
-    public Collection<Profile> getProfiles() { return this.profiles.values(); }
+    public Collection<Profile> getProfiles() { return Collections.unmodifiableCollection(profiles.values()); }
 
     public ProfileManager(LeaderboardsPlugin plugin)
     {
         this.plugin = plugin;
     }
 
-    public void add(UUID uniqueId, Profile profile) { this.profiles.put(uniqueId, profile); }
-    public void remove(UUID uniqueId) { this.profiles.remove(uniqueId); }
-    public Profile get(UUID uniqueId) { return this.profiles.get(uniqueId); }
+    public void add(UUID uniqueId, Profile profile) { profiles.put(uniqueId, profile); }
+    public void remove(UUID uniqueId) { profiles.remove(uniqueId); }
+    public Profile get(UUID uniqueId) { return profiles.get(uniqueId); }
 
-    public void setParameters(PreparedStatement statement, Profile profile, Player player) throws SQLException
+    public Profile load(UUID uniqueId, boolean create)
     {
-        // Fetch the total XP from UltimateSKills plugin
-        UUID uniqueId = player.getUniqueId();
+        try (
+                Connection connection = plugin.getDatabaseManager().getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+        )
+        {
+            statement.setString(1, uniqueId.toString());
+            ResultSet resultSet = statement.executeQuery();
 
+            // If a profile doesn't exist, and we're asked to create one, submit one to the database
+            if (!resultSet.next() && create)
+            {
+                // Create a new profile in the database as one didn't already exist
+                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);");
+                insertStatement.setString(1, uniqueId.toString());
+                insertStatement.executeUpdate();
+
+                // Assign the profile object
+                return new Profile(uniqueId);
+            }
+
+            // The profile exists in the database, create one with the loaded values
+            return new Profile(
+                    uniqueId,
+                    resultSet.getLong("time_played"),
+                    resultSet.getInt("mob_kills"),
+                    resultSet.getInt("blocks_broken"),
+                    resultSet.getInt("ores_mined"),
+                    resultSet.getInt("wood_mined"),
+                    resultSet.getInt("crops_harvested"),
+                    resultSet.getInt("fish_caught")
+            );
+        }
+        catch (SQLException e)
+        {
+            plugin.getLogger().log(Level.SEVERE, "Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void save(Player player, Profile profile)
+    {
+        try (Connection connection = plugin.getDatabaseManager().getConnection())
+        {
+            try (PreparedStatement statement = connection.prepareStatement(UPDATE_STATEMENT))
+            {
+                this.setParameters(statement, player, profile);
+                statement.executeUpdate();
+            }
+        }
+        catch (SQLException e)
+        {
+            plugin.getLogger().log(Level.SEVERE, "Failed to update profile for '" + player.getName() + "': " + e.getMessage());
+        }
+    }
+
+    public void setParameters(PreparedStatement statement, Player player, Profile profile) throws SQLException
+    {
         // Set parameter values
         statement.setLong(1, player.getStatistic(Statistic.PLAY_ONE_TICK));
         statement.setLong(2, profile.getTimePlayed());
@@ -50,19 +110,6 @@ public class ProfileManager
         statement.setString(10, profile.getUniqueId().toString());
     }
 
-    public void save(Connection connection, Player player, Profile profile) throws SQLException
-    {
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_STATEMENT))
-        {
-            this.setParameters(statement, profile, player);
-            statement.executeUpdate();
-        }
-        catch (SQLException e)
-        {
-            plugin.getLogger().log(Level.SEVERE, "Failed to update profile information for '" + player.getName() + "': " + e.getMessage());
-        }
-    }
-
-    public void disable() { this.profiles.clear(); }
+    public void disable() { profiles.clear(); }
 
 }

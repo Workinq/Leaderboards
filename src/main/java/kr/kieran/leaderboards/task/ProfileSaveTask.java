@@ -26,25 +26,24 @@ public class ProfileSaveTask extends BukkitRunnable
     {
         try (Connection connection = plugin.getDatabaseManager().getConnection())
         {
-            // For each profile save it
-            for (Profile profile : plugin.getProfileManager().getProfiles())
+            try (PreparedStatement statement = connection.prepareStatement(ProfileManager.UPDATE_STATEMENT))
             {
-                try (PreparedStatement statement = connection.prepareStatement(ProfileManager.UPDATE_STATEMENT))
+                // Add all the players that need updating to a batch statement
+                for (Profile profile : plugin.getProfileManager().getProfiles())
                 {
                     Player player = plugin.getServer().getPlayer(profile.getUniqueId());
                     if (player == null) continue;
-                    plugin.getProfileManager().setParameters(statement, profile, player);
-                    statement.executeUpdate();
+                    plugin.getProfileManager().setParameters(statement, player, profile);
+                    statement.addBatch();
                 }
-                catch (SQLException e)
-                {
-                    plugin.getLogger().log(Level.SEVERE, "Failed to update profile data: " + e.getMessage());
-                }
+
+                // Execute
+                statement.executeBatch();
             }
         }
         catch (SQLException e)
         {
-            plugin.getLogger().log(Level.SEVERE, "Failed to open database connection: " + e.getMessage());
+            plugin.getLogger().log(Level.SEVERE, "An error occurred whilst saving player profiles: " + e.getMessage());
         }
     }
 
