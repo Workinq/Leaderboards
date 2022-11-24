@@ -12,18 +12,17 @@ public class PreviousGuiManager
 {
 
     private final Map<Player, Stack<PopulateGui>> guiCache = new WeakHashMap<>();
-    public Stack<PopulateGui> getStackBy(Player player) { return this.guiCache.getOrDefault(player, new Stack<>()); }
 
     public void add(Player player, PopulateGui gui)
     {
-        Stack<PopulateGui> stack = this.guiCache.getOrDefault(player, new Stack<>());
+        Stack<PopulateGui> stack = guiCache.getOrDefault(player, new Stack<>());
         stack.push(gui);
-        this.guiCache.put(player, stack);
+        guiCache.put(player, stack);
     }
 
     public PopulateGui get(Player player)
     {
-        Stack<PopulateGui> stack = this.guiCache.getOrDefault(player, null);
+        Stack<PopulateGui> stack = guiCache.getOrDefault(player, null);
         if (stack == null) return null;
         if (stack.isEmpty()) return null;
         return stack.pop();
@@ -31,21 +30,21 @@ public class PreviousGuiManager
 
     public void remove(Player player)
     {
-        if (!this.guiCache.containsKey(player)) return;
-        this.guiCache.get(player).clear();
-        this.guiCache.remove(player);
+        if (!guiCache.containsKey(player)) return;
+        guiCache.get(player).clear();
+        guiCache.remove(player);
     }
 
     public void disable()
     {
-        Iterator<Map.Entry<Player, Stack<PopulateGui>>> iterator = this.guiCache.entrySet().iterator();
+        Iterator<Map.Entry<Player, Stack<PopulateGui>>> iterator = guiCache.entrySet().iterator();
         while (iterator.hasNext())
         {
             Map.Entry<Player, Stack<PopulateGui>> entry = iterator.next();
             entry.getValue().clear();
             iterator.remove();
         }
-        this.guiCache.clear();
+        guiCache.clear();
     }
 
 }

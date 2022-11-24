@@ -62,7 +62,7 @@ public class LeaderboardsPlugin extends JavaPlugin
     public void onEnable()
     {
         // Task
-        this.taskChain = BukkitTaskChainFactory.create(this);
+        taskChain = BukkitTaskChainFactory.create(this);
 
         // Register
         this.registerManagers();
@@ -75,26 +75,26 @@ public class LeaderboardsPlugin extends JavaPlugin
     public void onDisable()
     {
         // Ensure all tasks are complete
-        this.tasks.forEach(BukkitTask::cancel);
-        this.taskChain.shutdown(60, TimeUnit.SECONDS);
+        tasks.forEach(BukkitTask::cancel);
+        taskChain.shutdown(15, TimeUnit.SECONDS);
 
         // Manager shutdown
-        this.textureManager.disable();
-        this.guiManager.disable();
-        this.playerManager.disable();
-        this.islandManager.disable();
-        this.profileManager.disable();
-        this.database.disable();
+        textureManager.disable();
+        guiManager.disable();
+        playerManager.disable();
+        islandManager.disable();
+        profileManager.disable();
+        database.disable();
     }
 
     private void registerManagers()
     {
-        this.database = new Database(this);
-        this.profileManager = new ProfileManager(this);
-        this.islandManager = new IslandStatisticManager(this);
-        this.playerManager = new PlayerStatisticManager(this);
-        this.guiManager = new PreviousGuiManager();
-        this.textureManager = new SkullTextureManager(this);
+        database = new Database(this);
+        profileManager = new ProfileManager(this);
+        islandManager = new IslandStatisticManager(this);
+        playerManager = new PlayerStatisticManager(this);
+        guiManager = new PreviousGuiManager();
+        textureManager = new SkullTextureManager(this);
     }
 
     private void registerListeners()

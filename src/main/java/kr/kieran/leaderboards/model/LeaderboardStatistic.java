@@ -34,7 +34,7 @@ public enum LeaderboardStatistic
     public String getColumnName() { return columnName; }
 
     private final Function<Integer, String> formattedValue;
-    public Function<Integer, String> getFormattedValue() { return this.formattedValue; }
+    public Function<Integer, String> getFormattedValue() { return formattedValue; }
 
     LeaderboardStatistic(String niceName, String columnName, Function<Integer, String> formattedValue)
     {
