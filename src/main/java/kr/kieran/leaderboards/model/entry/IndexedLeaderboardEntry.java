@@ -1,4 +1,4 @@
-package kr.kieran.leaderboards.model;
+package kr.kieran.leaderboards.model.entry;
 
 public class IndexedLeaderboardEntry<T> extends LeaderboardEntry<T>
 {

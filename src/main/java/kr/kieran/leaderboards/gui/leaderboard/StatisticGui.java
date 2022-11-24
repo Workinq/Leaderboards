@@ -5,7 +5,7 @@ import kr.kieran.leaderboards.LeaderboardsPlugin;
 import kr.kieran.leaderboards.gui.type.PopulateGui;
 import kr.kieran.leaderboards.gui.type.leaderboard.IslandGui;
 import kr.kieran.leaderboards.gui.type.leaderboard.PlayerGui;
-import kr.kieran.leaderboards.model.LeaderboardEntry;
+import kr.kieran.leaderboards.model.entry.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
 import kr.kieran.leaderboards.model.LeaderboardType;
 import org.bukkit.OfflinePlayer;
