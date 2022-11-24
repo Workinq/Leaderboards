@@ -41,9 +41,7 @@ public class Profile
     public int getFishCaught() { return fishCaught; }
     public void setFishCaught(int fishCaught) { this.fishCaught = fishCaught; }
 
-    private int skillXp;
-    public int getSkillXp() { return skillXp; }
-    public void setSkillXp(int skillXp) { this.skillXp = skillXp; }
+    // TODO: Make a way to dynamically store statistics about the player rather than having to rewrite lots of code
 
     public Profile(UUID uniqueId) { this(uniqueId, 0L, 0, 0, 0, 0, 0, 0); }
     public Profile(UUID uniqueId, long timePlayed, int mobKills, int blocksBroken, int oresMined, int woodMined, int cropsHarvested, int fishCaught)
@@ -56,7 +54,6 @@ public class Profile
         this.woodMined = woodMined;
         this.cropsHarvested = cropsHarvested;
         this.fishCaught = fishCaught;
-        this.skillXp = skillXp;
     }
 
 }
