@@ -1,8 +1,8 @@
 package kr.kieran.leaderboards.manager.statistic;
 
 import kr.kieran.leaderboards.LeaderboardsPlugin;
-import kr.kieran.leaderboards.model.entry.LeaderboardEntry;
 import kr.kieran.leaderboards.model.LeaderboardStatistic;
+import kr.kieran.leaderboards.model.entry.LeaderboardEntry;
 import kr.kieran.leaderboards.utility.Color;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.stellardev.galacticskyblock.coll.IslandColl;
@@ -13,13 +13,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class IslandStatisticManager extends StatisticManager<Island>
 {
+
+    // Constants
+    private static final String STATISTIC_SELECT_STATEMENT = "SELECT `leaderboards_players`.`%s` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;";
+    private static final UnaryOperator<String> STATISTIC_SELECT_FUNCTION = columnName ->  String.format(STATISTIC_SELECT_STATEMENT, columnName);
 
     public IslandStatisticManager(LeaderboardsPlugin plugin)
     {
@@ -38,14 +43,15 @@ public class IslandStatisticManager extends StatisticManager<Island>
                 {
                     for (LeaderboardStatistic statistic : LeaderboardStatistic.values())
                     {
-                        List<LeaderboardEntry<Island>> entries = new LinkedList<>();
+                        // The entries will be sorted after so there's no need to use a LinkedList
+                        List<LeaderboardEntry<Island>> entries = new ArrayList<>();
                         for (Island island : IslandColl.get().getAll())
                         {
                             if (island.isNone()) continue;
                             int total = 0;
                             for (APlayer aplayer : island.getAPlayers())
                             {
-                                try (PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`" + statistic.getColumnName() + "` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;"))
+                                try (PreparedStatement statement = connection.prepareStatement(STATISTIC_SELECT_FUNCTION.apply(statistic.getColumnName())))
                                 {
                                     statement.setString(1, aplayer.getId());
                                     ResultSet resultSet = statement.executeQuery();
@@ -81,29 +87,28 @@ public class IslandStatisticManager extends StatisticManager<Island>
             for (int i = 0; i < plugin.getConfig().getInt("placeholder.limit"); i++)
             {
                 int finalIndex = i;
-                this.register(plugin.getConfig().getString("placeholder.island.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
+                String formattedIndexString = String.format("%,d", i + 1);
+                this.register(plugin.getConfig().getString("placeholder.island.entry").replace("%statistic%", statistic.name()).replace(INDEX_PLACEHOLDER, String.valueOf(i + 1)), () -> {
                     try
                     {
                         List<LeaderboardEntry<Island>> leaderboardEntries = entries.get(statistic);
-                        if (leaderboardEntries == null) return Color.color(plugin.getConfig().getString("placeholder.still-loading").replace("%index%", String.format("%,d", finalIndex + 1)));
+                        if (leaderboardEntries == null) return Color.color(plugin.getConfig().getString("placeholder.still-loading").replace(INDEX_PLACEHOLDER, formattedIndexString));
                         LeaderboardEntry<Island> entry = leaderboardEntries.get(finalIndex);
                         Island island = entry.getRepresented();
                         if (island == null) return Color.color(plugin.getConfig().getString("placeholder.island.bad-island"));
 
                         return Color.color(plugin.getConfig().getString("placeholder.island.format")
-                                .replace("%index%", String.format("%,d", finalIndex + 1))
+                                .replace(INDEX_PLACEHOLDER, formattedIndexString)
                                 .replace("%island%", island.getName())
                                 .replace("%value%", statistic.getFormattedValue().apply(entry.getValue())));
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds").replace("%index%", String.format("%,d", finalIndex + 1)));
+                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds").replace(INDEX_PLACEHOLDER, formattedIndexString));
                     }
                 });
             }
         }
-
-
     }
 
 }

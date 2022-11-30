@@ -14,11 +14,16 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.UnaryOperator;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
 {
+
+    // Constants
+    private static final String STATISTIC_SELECT_STATEMENT = "SELECT `leaderboards_players`.`unique_id`, `leaderboards_players`.`%s` FROM `leaderboards_players` ORDER BY `leaderboards_players`.`%s`;";
+    private static final UnaryOperator<String> STATISTIC_SELECT_FUNCTION = columnName ->  String.format(STATISTIC_SELECT_STATEMENT, columnName, columnName);
 
     public PlayerStatisticManager(LeaderboardsPlugin plugin)
     {
@@ -38,7 +43,7 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                     for (LeaderboardStatistic statistic : LeaderboardStatistic.values())
                     {
                         List<LeaderboardEntry<OfflinePlayer>> entries = new LinkedList<>();
-                        try (PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`unique_id`, `leaderboards_players`.`" + statistic.getColumnName() + "` FROM `leaderboards_players` ORDER BY `leaderboards_players`.`" + statistic.getColumnName() + "`;"))
+                        try (PreparedStatement statement = connection.prepareStatement(STATISTIC_SELECT_FUNCTION.apply(statistic.getColumnName())))
                         {
                             ResultSet resultSet = statement.executeQuery();
                             while (resultSet.next())
@@ -74,23 +79,24 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
             for (int i = 0; i < plugin.getConfig().getInt("placeholder.limit"); i++)
             {
                 int finalIndex = i;
-                this.register(plugin.getConfig().getString("placeholder.player.entry").replace("%statistic%", statistic.name()).replace("%index%", String.valueOf(i + 1)), () -> {
+                String formattedIndexString = String.format("%,d", i + 1);
+                this.register(plugin.getConfig().getString("placeholder.player.entry").replace("%statistic%", statistic.name()).replace(INDEX_PLACEHOLDER, String.valueOf(i + 1)), () -> {
                     try
                     {
                         List<LeaderboardEntry<OfflinePlayer>> leaderboardEntries = entries.get(statistic);
-                        if (leaderboardEntries == null) return Color.color(plugin.getConfig().getString("placeholder.still-loading").replace("%index%", String.format("%,d", finalIndex + 1)));
+                        if (leaderboardEntries == null) return Color.color(plugin.getConfig().getString("placeholder.still-loading").replace(INDEX_PLACEHOLDER, formattedIndexString));
                         LeaderboardEntry<OfflinePlayer> entry = leaderboardEntries.get(finalIndex);
                         OfflinePlayer player = entry.getRepresented();
                         if (player == null) return Color.color(plugin.getConfig().getString("placeholder.player.bad-player"));
 
                         return Color.color(plugin.getConfig().getString("placeholder.player.format")
-                                .replace("%index%", String.format("%,d", finalIndex + 1))
+                                .replace(INDEX_PLACEHOLDER, formattedIndexString)
                                 .replace("%player%", player.getName())
                                 .replace("%value%", statistic.getFormattedValue().apply(entry.getValue())));
                     }
                     catch (IndexOutOfBoundsException e)
                     {
-                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds").replace("%index%", String.format("%,d", finalIndex + 1)));
+                        return Color.color(plugin.getConfig().getString("placeholder.out-of-bounds").replace(INDEX_PLACEHOLDER, formattedIndexString));
                     }
                 });
             }

@@ -17,6 +17,9 @@ import java.util.logging.Level;
 public abstract class StatisticManager<T>
 {
 
+    // Constants
+    static final String INDEX_PLACEHOLDER = "%index%";
+
     protected final LeaderboardsPlugin plugin;
     protected final BukkitTask task;
 
@@ -24,7 +27,7 @@ public abstract class StatisticManager<T>
     protected final Map<LeaderboardStatistic, List<LeaderboardEntry<T>>> entries = new HashMap<>();
     public List<LeaderboardEntry<T>> getEntriesBy(LeaderboardStatistic statistic) { return entries.get(statistic); }
 
-    public StatisticManager(LeaderboardsPlugin plugin, Class<T> type)
+    StatisticManager(LeaderboardsPlugin plugin, Class<T> type)
     {
         this.plugin = plugin;
         String typeName = type.getSimpleName();
