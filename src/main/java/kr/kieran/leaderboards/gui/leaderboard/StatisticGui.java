@@ -22,7 +22,7 @@ public abstract class StatisticGui extends PopulateGui
 
     protected final LeaderboardType type;
 
-    public StatisticGui(LeaderboardsPlugin plugin, LeaderboardType type, String path, Player player)
+    StatisticGui(LeaderboardsPlugin plugin, LeaderboardType type, String path, Player player)
     {
         super(plugin, path, player);
 

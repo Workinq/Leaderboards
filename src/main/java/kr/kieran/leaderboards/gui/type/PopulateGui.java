@@ -16,7 +16,7 @@ public abstract class PopulateGui extends CacheGui
     protected final LeaderboardsPlugin plugin;
     private final String path;
 
-    public PopulateGui(LeaderboardsPlugin plugin, String path, Player player)
+    protected PopulateGui(LeaderboardsPlugin plugin, String path, Player player)
     {
         super(plugin, plugin.getConfig().getInt(path + ".rows"), Color.color(plugin.getConfig().getString(path + ".name")), InteractionModifier.VALUES, player);
 

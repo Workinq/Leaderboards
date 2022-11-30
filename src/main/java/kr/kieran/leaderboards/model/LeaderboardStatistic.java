@@ -16,7 +16,7 @@ public enum LeaderboardStatistic
 
     // BLOCK STATISTICS
     BLOCKS_BROKEN("Blocks Broken", "blocks_broken", LeaderboardStatistic::insertCommas),
-    BLOCKS_TRAVELLED("Blocks Travelled", "blocks_travelled", value -> { return insertCommas(value / 100); }),
+    BLOCKS_TRAVELLED("Blocks Travelled", "blocks_travelled", value -> insertCommas(value / 100)),
     ORES_MINED("Ores Mined", "ores_mined", LeaderboardStatistic::insertCommas),
     WOOD_MINED("Wood Mined", "wood_mined", LeaderboardStatistic::insertCommas),
 

@@ -24,7 +24,7 @@ public abstract class LeaderboardGui<T> extends CacheGui
     protected final LeaderboardStatistic statistic;
     protected final List<LeaderboardEntry<T>> entries;
 
-    public LeaderboardGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player, List<LeaderboardEntry<T>> entries)
+    LeaderboardGui(LeaderboardsPlugin plugin, LeaderboardStatistic statistic, LeaderboardType type, Player player, List<LeaderboardEntry<T>> entries)
     {
         super(plugin, plugin.getConfig().getInt("guis.leaderboard.rows"), Color.color(plugin.getConfig().getString("guis.leaderboard.name").replace("%stat%", statistic.getNiceName()).replace("%type%", type.getName())), InteractionModifier.VALUES, player);
 

@@ -40,8 +40,6 @@ public abstract class StatisticManager<T>
             plugin.getLogger().info("Successfully registered hologram placeholders for the " + typeName + " leaderboard");
         });
 
-        //Executors.newSingleThreadExecutor().submit(runnable).get(10, TimeUnit.SECONDS);
-
         long taskDelay = plugin.getConfig().getLong("tasks.update-frequency") * 20L;
         this.task = runnable.runTaskTimerAsynchronously(plugin, taskDelay, taskDelay);
     }

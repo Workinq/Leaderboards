@@ -17,7 +17,7 @@ public abstract class CacheGui extends BaseGui
     private boolean closeFromClick = false;
     public void setCloseFromClick(boolean closeFromClick) { this.closeFromClick = closeFromClick; }
 
-    public CacheGui(LeaderboardsPlugin plugin, int rows, String title, Set<InteractionModifier> interactionModifiers, Player player)
+    protected CacheGui(LeaderboardsPlugin plugin, int rows, String title, Set<InteractionModifier> interactionModifiers, Player player)
     {
         super(rows, title, interactionModifiers);
 
