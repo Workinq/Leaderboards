@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 public abstract class PopulateGui extends CacheGui
 {
 
-    protected final LeaderboardsPlugin plugin;
     private final String path;
 
     protected PopulateGui(LeaderboardsPlugin plugin, String path, Player player)
@@ -21,28 +20,27 @@ public abstract class PopulateGui extends CacheGui
         super(plugin, plugin.getConfig().getInt(path + ".rows"), Color.color(plugin.getConfig().getString(path + ".name")), InteractionModifier.VALUES, player);
 
         // Assign
-        this.plugin = plugin;
         this.path = path;
     }
 
     protected void populateGui()
     {
         // Populate the gui
-        for (String key : plugin.getConfig().getConfigurationSection(this.path + ".items").getKeys(false))
+        for (String key : plugin.getConfig().getConfigurationSection(path + ".items").getKeys(false))
         {
             // Args
-            String path = this.path + ".items." + key;
-            int slot = plugin.getConfig().getInt(path + ".slot");
+            String itemPath = path + ".items." + key;
+            int slot = plugin.getConfig().getInt(itemPath + ".slot");
 
             // Item
             this.setItem(slot, ItemBuilder
-                    .from(new ItemStack(Material.getMaterial(plugin.getConfig().getString(path + ".material")), 1, (short) plugin.getConfig().getInt(path + ".data")))
-                    .setName(Color.color(plugin.getConfig().getString(path + ".name")))
-                    .setLore(Color.color(plugin.getConfig().getStringList(path + ".lore")))
+                    .from(new ItemStack(Material.getMaterial(plugin.getConfig().getString(itemPath + ".material")), 1, (short) plugin.getConfig().getInt(itemPath + ".data")))
+                    .setName(Color.color(plugin.getConfig().getString(itemPath + ".name")))
+                    .setLore(Color.color(plugin.getConfig().getStringList(itemPath + ".lore")))
                     .asGuiItem());
 
-            if (!plugin.getConfig().isSet(path + ".action")) continue;
-            GuiAction<InventoryClickEvent> action = this.getAction(plugin.getConfig().getString(path + ".action"));
+            if (!plugin.getConfig().isSet(itemPath + ".action")) continue;
+            GuiAction<InventoryClickEvent> action = this.getAction(plugin.getConfig().getString(itemPath + ".action"));
             if (action != null) this.addSlotAction(slot, action);
         }
 
