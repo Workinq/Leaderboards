@@ -52,4 +52,10 @@ public class PlayerLocation
         return Objects.equals(this.world, that.world);
     }
 
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(world, x, y, z);
+    }
+
 }
