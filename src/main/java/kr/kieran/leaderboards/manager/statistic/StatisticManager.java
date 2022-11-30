@@ -29,15 +29,15 @@ public abstract class StatisticManager<T>
         this.plugin = plugin;
         String typeName = type.getSimpleName();
 
-        plugin.getLogger().log(Level.INFO, "Fetching initial leaderboard (" + typeName + ") values from database, this can take at most 10 seconds...");
+        plugin.getLogger().log(Level.INFO, "Fetching initial leaderboard {0} values from database, this can take at most 10 seconds...", typeName);
 
         BukkitRunnable runnable = this.getUpdateTask();
 
         // Run the task synchronously first time to make sure all the database values are loaded before placeholders are registered
         CompletableFuture.runAsync(runnable).whenComplete((unused, throwable) -> {
-            plugin.getLogger().log(Level.INFO, "Successfully fetched initial leaderboard (" + typeName + ") values from the database");
+            plugin.getLogger().info("Successfully fetched initial leaderboard (" + typeName + ") values from the database");
             this.registerPlaceholders();
-            plugin.getLogger().log(Level.INFO, "Successfully registered hologram placeholders for the " + typeName + " leaderboard");
+            plugin.getLogger().info("Successfully registered hologram placeholders for the " + typeName + " leaderboard");
         });
 
         //Executors.newSingleThreadExecutor().submit(runnable).get(10, TimeUnit.SECONDS);

@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class SkullTextureManager
 {
@@ -60,7 +59,7 @@ public class SkullTextureManager
                     }
                     catch (SQLException e)
                     {
-                        plugin.getLogger().log(Level.SEVERE, "Failed to register cached skull textures: " + e.getMessage());
+                        plugin.getLogger().severe("Failed to register cached skull textures: " + e.getMessage());
                     }
                 })
                 .execute();

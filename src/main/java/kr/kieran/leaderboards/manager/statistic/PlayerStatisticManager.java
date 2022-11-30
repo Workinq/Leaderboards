@@ -60,7 +60,7 @@ public class PlayerStatisticManager extends StatisticManager<OfflinePlayer>
                 }
                 catch (SQLException e)
                 {
-                    plugin.getLogger().log(Level.SEVERE, "Failed to update cache (player): " + e.getMessage());
+                    plugin.getLogger().log(Level.SEVERE, "Failed to update player leaderboard values", e);
                 }
             }
         };

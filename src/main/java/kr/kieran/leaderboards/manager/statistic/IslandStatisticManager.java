@@ -67,7 +67,7 @@ public class IslandStatisticManager extends StatisticManager<Island>
                 }
                 catch (SQLException e)
                 {
-                    plugin.getLogger().log(Level.SEVERE, "Failed to update cache (island): " + e.getMessage());
+                    plugin.getLogger().log(Level.SEVERE, "Failed to update island leaderboard values", e);
                 }
             }
         };

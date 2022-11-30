@@ -91,7 +91,7 @@ public class ProfileManager
         }
         catch (SQLException e)
         {
-            plugin.getLogger().log(Level.SEVERE, "Failed to update profile for '" + player.getName() + "': " + e.getMessage());
+            plugin.getLogger().severe("Failed to update profile for '" + player.getName() + "': " + e.getMessage());
         }
     }
 

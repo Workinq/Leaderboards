@@ -9,7 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 public class ProfileSaveTask extends BukkitRunnable
 {
@@ -43,7 +42,7 @@ public class ProfileSaveTask extends BukkitRunnable
         }
         catch (SQLException e)
         {
-            plugin.getLogger().log(Level.SEVERE, "An error occurred whilst saving player profiles: " + e.getMessage());
+            plugin.getLogger().severe("An error occurred whilst saving player profiles: " + e.getMessage());
         }
     }
 

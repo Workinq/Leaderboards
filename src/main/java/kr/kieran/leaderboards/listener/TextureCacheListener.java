@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 public class TextureCacheListener implements Listener
 {
@@ -44,7 +43,7 @@ public class TextureCacheListener implements Listener
                     }
                     catch (SQLException e)
                     {
-                        plugin.getLogger().log(Level.SEVERE, "Failed to insert texture for " + player.getName() + ": " + e.getMessage());
+                        plugin.getLogger().severe("Failed to insert texture for " + player.getName() + ": " + e.getMessage());
                         return null;
                     }
                 })
