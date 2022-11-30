@@ -19,7 +19,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -27,11 +26,13 @@ import java.util.UUID;
 public class SkullTextureManager
 {
 
+    // Constants
+    private static final String TEXTURE_PLACEHOLDER = "textures";
+
     private final LeaderboardsPlugin plugin;
 
     // Texture cache
     private final Map<UUID, String> textures = new HashMap<>();
-    public Map<UUID, String> getTextures() { return Collections.unmodifiableMap(textures); }
 
     public SkullTextureManager(LeaderboardsPlugin plugin)
     {
@@ -71,7 +72,7 @@ public class SkullTextureManager
     public String getTextureFrom(Player player)
     {
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
-        Property property = Iterables.getFirst(entityPlayer.getProfile().getProperties().get("textures"), null);
+        Property property = Iterables.getFirst(entityPlayer.getProfile().getProperties().get(TEXTURE_PLACEHOLDER), null);
         return property == null ? null : property.getValue();
     }
 
@@ -88,7 +89,7 @@ public class SkullTextureManager
             NBTTagCompound baseCompound = vanillaStack.getTag();
             if (baseCompound == null) baseCompound = new NBTTagCompound();
             GameProfile profile = new GameProfile(uuid, name);
-            profile.getProperties().put("textures", new Property("textures", texture));
+            profile.getProperties().put(TEXTURE_PLACEHOLDER, new Property(TEXTURE_PLACEHOLDER, texture));
             NBTTagCompound skullOwner = new NBTTagCompound();
             GameProfileSerializer.serialize(skullOwner, profile);
             baseCompound.set("SkullOwner", skullOwner);
@@ -118,7 +119,7 @@ public class SkullTextureManager
         if (skullOwner == null) return null;
         GameProfile profile = GameProfileSerializer.deserialize(skullOwner);
         if (profile == null) return null;
-        Property property = Iterables.getFirst(profile.getProperties().get("textures"), null);
+        Property property = Iterables.getFirst(profile.getProperties().get(TEXTURE_PLACEHOLDER), null);
         return (property == null) ? null : property.getValue();
     }
 
