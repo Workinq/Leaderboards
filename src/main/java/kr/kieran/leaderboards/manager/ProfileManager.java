@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class ProfileManager
 {
@@ -42,23 +41,14 @@ public class ProfileManager
     {
         try (
                 Connection connection = plugin.getDatabaseManager().getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
+                PreparedStatement profileSelectStatement = connection.prepareStatement("SELECT `leaderboards_players`.`time_played`, `leaderboards_players`.`mob_kills`, `leaderboards_players`.`blocks_broken`, `leaderboards_players`.`ores_mined`, `leaderboards_players`.`wood_mined`, `leaderboards_players`.`crops_harvested`, `leaderboards_players`.`fish_caught` FROM `leaderboards_players` WHERE `leaderboards_players`.`unique_id` = ?;")
         )
         {
-            statement.setString(1, uniqueId.toString());
-            ResultSet resultSet = statement.executeQuery();
+            profileSelectStatement.setString(1, uniqueId.toString());
+            ResultSet resultSet = profileSelectStatement.executeQuery();
 
             // If a profile doesn't exist, and we're asked to create one, submit one to the database
-            if (!resultSet.next() && create)
-            {
-                // Create a new profile in the database as one didn't already exist
-                PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);");
-                insertStatement.setString(1, uniqueId.toString());
-                insertStatement.executeUpdate();
-
-                // Assign the profile object
-                return new Profile(uniqueId);
-            }
+            if (!resultSet.next() && create) return this.insertNewProfile(uniqueId);
 
             // The profile exists in the database, create one with the loaded values
             return new Profile(
@@ -74,9 +64,30 @@ public class ProfileManager
         }
         catch (SQLException e)
         {
-            plugin.getLogger().log(Level.SEVERE, "Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
+            plugin.getLogger().severe("Failed to load leaderboard profile of '" + uniqueId.toString() + "': " + e.getMessage());
             return null;
         }
+    }
+
+    private Profile insertNewProfile(UUID uniqueId)
+    {
+        // Create a new profile in the database as one didn't already exist
+        try (
+                Connection connection = plugin.getDatabaseManager().getConnection();
+                PreparedStatement profileCreateStatement = connection.prepareStatement("INSERT INTO `leaderboards_players` (`leaderboards_players`.`unique_id`) VALUES (?);")
+        )
+        {
+            profileCreateStatement.setString(1, uniqueId.toString());
+            profileCreateStatement.executeUpdate();
+        }
+        catch (SQLException e)
+        {
+            plugin.getLogger().severe("Failed to insert a new profile into the database for '" + uniqueId + "'");
+            e.printStackTrace();
+            return null;
+        }
+
+        return new Profile(uniqueId);
     }
 
     public void save(Player player, Profile profile)
