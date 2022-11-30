@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 public class Database
 {
 
+    // Constants
+    private static final String DB_TABLES_FILE = "dbtables.sql";
+
     private final LeaderboardsPlugin plugin;
     private final HikariDataSource dataSource = new HikariDataSource();
 
@@ -23,15 +26,7 @@ public class Database
     {
         this.plugin = plugin;
         this.registerProperties();
-        try
-        {
-            this.setupTables();
-        }
-        catch (SQLException e)
-        {
-            plugin.getLogger().log(Level.INFO, "Failed to setup necessary tables for the plugin: " + e.getMessage());
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-        }
+        this.setupTables();
     }
 
     /**
@@ -41,9 +36,6 @@ public class Database
      */
     private void registerProperties()
     {
-        // Log
-        plugin.getLogger().log(Level.INFO, "Setting up database environment...");
-
         // Driver & pool size
         dataSource.setMaximumPoolSize(8);
         dataSource.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
@@ -67,19 +59,18 @@ public class Database
      * Setup the required tables synchronously to ensure they're
      * available before the plugin attempts to use them.
      */
-    private void setupTables() throws SQLException
+    private void setupTables()
     {
         // Read queries file
         String setup;
-        try (InputStream in = LeaderboardsPlugin.class.getClassLoader().getResourceAsStream("dbtables.sql"))
+        try (InputStream in = LeaderboardsPlugin.class.getClassLoader().getResourceAsStream(DB_TABLES_FILE))
         {
+            if (in == null) throw new IOException("The input stream for the file " + DB_TABLES_FILE + " is null");
             setup = new BufferedReader(new InputStreamReader(in)).lines().collect(Collectors.joining("\n"));
         }
         catch (IOException e)
         {
-            plugin.getLogger().log(Level.SEVERE, "Could not read from 'dbtables.sql': " + e.getMessage());
-            plugin.getServer().getPluginManager().disablePlugin(plugin);
-            return;
+            throw new BadTableFileException("Could not read the file '" + DB_TABLES_FILE + "'", e);
         }
 
         // Execute queries
@@ -87,14 +78,42 @@ public class Database
         for (String query : queries)
         {
             if (query.isEmpty()) continue;
-            try (Connection connection = this.getConnection(); PreparedStatement statement = connection.prepareStatement(query))
+            try (
+                    Connection connection = this.getConnection();
+                    PreparedStatement statement = connection.prepareStatement(query)
+            )
             {
                 statement.execute();
+            }
+            catch (SQLException e)
+            {
+                // This will prevent the plugin from enabling, so we don't need to call PluginManager#disablePlugin(Plugin)
+                throw new FailedStatementException("Failed to setup the necessary tables for the plugin", e);
             }
         }
 
         // Log
         plugin.getLogger().log(Level.INFO, "Finished executing preliminary database queries.");
+    }
+
+    private static class BadTableFileException extends RuntimeException
+    {
+
+        public BadTableFileException(String message, Throwable throwable)
+        {
+            super(message, throwable);
+        }
+
+    }
+
+    private static class FailedStatementException extends RuntimeException
+    {
+
+        public FailedStatementException(String message, Throwable throwable)
+        {
+            super(message, throwable);
+        }
+
     }
 
     /**
