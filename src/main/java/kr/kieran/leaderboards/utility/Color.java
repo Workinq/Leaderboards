@@ -5,8 +5,10 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Color
+public final class Color
 {
+
+    private Color() {}
 
     public static String color(String text)
     {

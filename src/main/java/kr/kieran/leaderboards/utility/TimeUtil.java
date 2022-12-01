@@ -2,8 +2,10 @@ package kr.kieran.leaderboards.utility;
 
 import java.util.concurrent.TimeUnit;
 
-public class TimeUtil
+public final class TimeUtil
 {
+
+    private TimeUtil() {}
 
     public static String formatTicks(int ticks) { return formatTime(ticks * 50L); }
     public static String formatSeconds(int seconds) { return formatTime(seconds * 1000L); }

@@ -7,6 +7,8 @@ import java.util.EnumSet;
 public class MaterialUtil
 {
 
+    private MaterialUtil() {}
+
     private static final EnumSet<Material> ORE_MATERIALS = EnumSet.of(Material.EMERALD_ORE, Material.DIAMOND_ORE, Material.REDSTONE_ORE, Material.GLOWING_REDSTONE_ORE, Material.GOLD_ORE, Material.LAPIS_ORE, Material.IRON_ORE, Material.COAL_ORE, Material.QUARTZ_ORE);
     public static boolean isOre(Material material) { return ORE_MATERIALS.contains(material); }
 
