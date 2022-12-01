@@ -55,11 +55,4 @@ public class SkullBuilder extends BaseItemBuilder<dev.triumphteam.gui.builder.it
         return this;
     }
 
-    public SkullBuilder ownerUnsafe(String texture)
-    {
-        UUID hashAsId = new UUID(texture.hashCode(), texture.hashCode());
-        ItemStack modified = Bukkit.getUnsafe().modifyItemStack(new ItemStack(Material.SKULL_ITEM, 1, (byte) 3), "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + texture + "\"}]}}}");
-        return new SkullBuilder(modified);
-    }
-
 }
